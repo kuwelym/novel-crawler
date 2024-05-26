@@ -44,5 +44,20 @@ public class NovelController {
                         .build()
         );
     }
+
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseObject> getNovelDetail(
+            @RequestParam(defaultValue = "") String novelName,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        PageableData<Novel> pageableData = novelService.getNovelDetails(novelName, page);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get novel details successfully.")
+                        .data(pageableData)
+                        .build()
+        );
+    }
 }
 
