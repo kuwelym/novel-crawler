@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -99,6 +100,85 @@ public class NovelService {
             }
         }
         return 1;
+    }
+
+    public PageableData<Novel> getNovelDetails(String novelName, int page) {
+        String url = String.format("%s/%s/trang-%d/#list-chapter", BASE_URL, novelName, page);
+        return fetchNovelDetails(url);
+    }
+
+    private PageableData<Novel> fetchNovelDetails(String url) {
+        Novel novel = new Novel();
+        PageableData<Novel> pageableData = new PageableData<>();
+
+        try {
+            Document doc = Jsoup.connect(url).get();
+
+            Element novelInfoDiv = doc.selectFirst("div.col-xs-12.col-info-desc");
+            if (novelInfoDiv != null) {
+                extractNovelInfo(novelInfoDiv, novel);
+            }
+
+            List<String> chapters = extractChapters(doc);
+            novel.setChapters(chapters);
+
+            int totalPages = extractTotalPages(doc);
+            pageableData.setContent(Collections.singletonList(novel));
+            pageableData.setTotalPages(totalPages);
+
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
+        return pageableData;
+    }
+
+    private void extractNovelInfo(Element novelInfoDiv, Novel novel) {
+        String title = novelInfoDiv.selectFirst("h3.title").text();
+        novel.setTitle(title);
+
+        Element imgElement = novelInfoDiv.selectFirst("div.book img");
+        if (imgElement != null) {
+            String coverUrl = imgElement.attr("src");
+            novel.setCoverUrl(coverUrl);
+        }
+
+        Element authorElement = novelInfoDiv.selectFirst("div.info-holder div.info a[href~=tac-gia]");
+        if (authorElement != null) {
+            String author = authorElement.text();
+            novel.setAuthor(author);
+        }
+
+        Elements genreElements = novelInfoDiv.select("div.info-holder div.info a[href~=the-loai]");
+        List<String> genres = new ArrayList<>();
+        for (Element genreElement : genreElements) {
+            genres.add(genreElement.text());
+        }
+        novel.setGenres(genres);
+
+        Element statusElement = novelInfoDiv.selectFirst("div.info-holder div.info span.text-success");
+        if (statusElement != null) {
+            String status = statusElement.text();
+            novel.setStatus(status);
+        }
+
+        Element descriptionElement = novelInfoDiv.selectFirst("div.desc div.desc-text");
+        if (descriptionElement != null) {
+            novel.setDescription(descriptionElement.toString());
+        }
+    }
+
+    private List<String> extractChapters(Document doc) {
+        List<String> chapters = new ArrayList<>();
+        Element listChapterDiv = doc.selectFirst("#list-chapter");
+        if (listChapterDiv != null) {
+            Elements chapterElements = listChapterDiv.select("ul.list-chapter li");
+            for (Element chapterElement : chapterElements) {
+                String chapterTitle = chapterElement.selectFirst("a").text();
+                chapters.add(chapterTitle);
+            }
+        }
+        return chapters;
     }
 
 }
