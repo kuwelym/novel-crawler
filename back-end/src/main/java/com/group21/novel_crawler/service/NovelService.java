@@ -1,6 +1,7 @@
 package com.group21.novel_crawler.service;
 
 import com.group21.novel_crawler.common.PageableData;
+import com.group21.novel_crawler.entity.ChapterNovel;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.exception.InternalServerErrorException;
 import org.jsoup.Jsoup;
@@ -181,4 +182,38 @@ public class NovelService {
         return chapters;
     }
 
+    public ChapterNovel getChapterNovel(String novelName, int chapterNumber) {
+        String url = String.format("%s/%s/chuong-%d", BASE_URL, novelName, chapterNumber);
+        return fetchChapterNovel(url);
+    }
+
+    private ChapterNovel fetchChapterNovel(String url) {
+        ChapterNovel chapterNovel = new ChapterNovel();
+        try {
+            Document doc = Jsoup.connect(url).get();
+
+            Element novelTitleElement = doc.selectFirst("a.truyen-title");
+            if (novelTitleElement != null) {
+                String novelTitle = novelTitleElement.text();
+                chapterNovel.setNovelTitle(novelTitle);
+            }
+
+            Element chapterTitleElement = doc.selectFirst("h2 a.chapter-title");
+            if (chapterTitleElement != null) {
+                String chapterTitle = chapterTitleElement.text();
+                chapterNovel.setChapterTitle(chapterTitle);
+            }
+
+            Element chapterContentDiv = doc.selectFirst("div#chapter-c");
+            if (chapterContentDiv != null) {
+                chapterContentDiv.select(".ads-responsive").remove();
+                String chapterContent = chapterContentDiv.html();
+                chapterNovel.setChapterContent(chapterContent);
+            }
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
+        return chapterNovel;
+    }
 }
