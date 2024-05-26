@@ -3,6 +3,7 @@ package com.group21.novel_crawler.controller;
 import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.common.ResponseObject;
 import com.group21.novel_crawler.common.SearchObject;
+import com.group21.novel_crawler.entity.ChapterNovel;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.service.NovelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,36 @@ public class NovelController {
                         .statusCode(HttpStatus.OK.value())
                         .message("Search novel by search text successfully.")
                         .data(pageableData)
+                        .build()
+        );
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<ResponseObject> getNovelDetail(
+            @RequestParam(defaultValue = "") String novelName,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        PageableData<Novel> pageableData = novelService.getNovelDetails(novelName, page);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get novel details successfully.")
+                        .data(pageableData)
+                        .build()
+        );
+    }
+
+    @GetMapping("/chapter")
+    public ResponseEntity<ResponseObject> getChapterNovel(
+            @RequestParam(defaultValue = "") String novelName,
+            @RequestParam(defaultValue = "1") int chapterNumber
+    ) {
+        ChapterNovel chapterNovel = novelService.getChapterNovel(novelName, chapterNumber);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get chapter novel successfully.")
+                        .data(chapterNovel)
                         .build()
         );
     }
