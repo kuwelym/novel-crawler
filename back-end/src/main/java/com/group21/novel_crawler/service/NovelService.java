@@ -22,6 +22,11 @@ public class NovelService {
         return fetchNovels(url);
     }
 
+    public PageableData<Novel> searchNovel(String searchText, int page) {
+        String url = String.format("%s/tim-kiem?tukhoa=%s&page=%d", BASE_URL, searchText, page);
+        return fetchNovels(url);
+    }
+
     private PageableData<Novel> fetchNovels(String url) {
         PageableData<Novel> pageableData = new PageableData<>();
         List<Novel> novelList = new ArrayList<>();

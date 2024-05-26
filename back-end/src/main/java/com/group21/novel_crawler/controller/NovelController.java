@@ -2,6 +2,7 @@ package com.group21.novel_crawler.controller;
 
 import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.common.ResponseObject;
+import com.group21.novel_crawler.common.SearchObject;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.service.NovelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,16 @@ public class NovelController {
         );
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<ResponseObject> searchNovel(@RequestBody SearchObject searchObject) {
+        PageableData<Novel> pageableData = novelService.searchNovel(searchObject.getSearchText(), searchObject.getPage());
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Search novel by search text successfully.")
+                        .data(pageableData)
+                        .build()
+        );
+    }
 }
 
