@@ -4,12 +4,23 @@ import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.entity.ChapterNovel;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.exception.InternalServerErrorException;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.TextAlignment;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -215,5 +226,71 @@ public class NovelService {
         }
 
         return chapterNovel;
+    }
+
+    public byte[] exportChapterToPdf(String novelName, int chapterNumber) {
+        String baseUrl = "https://truyenfull.vn";
+        try {
+            String url = String.format("%s/%s/chuong-%d", baseUrl, novelName, chapterNumber);
+            Document doc = Jsoup.connect(url).get();
+
+            // Get novel title
+            String novelTitle = "";
+            Element novelTitleElement = doc.selectFirst("a.truyen-title");
+            if (novelTitleElement != null) {
+                novelTitle = novelTitleElement.text();
+            }
+
+            // Get chapter title
+            String chapterTitle = "";
+            Element chapterTitleElement = doc.selectFirst("h2 a.chapter-title");
+            if (chapterTitleElement != null) {
+                chapterTitle = chapterTitleElement.text();
+            }
+
+            // Get chapter content
+            String chapterContent = "";
+            Element chapterContentDiv = doc.selectFirst("div#chapter-c");
+            if (chapterContentDiv != null) {
+                chapterContentDiv.select(".ads-responsive").remove();
+                chapterContent = chapterContentDiv.text();
+            }
+
+            // Export to PDF
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+            PdfWriter writer = new PdfWriter(outputStream);
+            PdfDocument pdfDocument = new PdfDocument(writer);
+
+            // Load the font supporting Vietnamese characters
+            String fontPath = "src/main/resources/times.ttf";
+            byte[] fontBytes = Files.readAllBytes(Paths.get(fontPath));
+            PdfFont font = PdfFontFactory.createFont(fontBytes, PdfEncodings.IDENTITY_H, true);
+
+            com.itextpdf.layout.Document pdfDoc = new com.itextpdf.layout.Document(pdfDocument);
+
+            // Set the font for paragraphs
+            pdfDoc.setFont(font);
+
+            // Add novel title
+            Text novelTitleText = new Text(novelTitle).setFont(font).setBold().setFontSize(18);
+            Paragraph novelTitleParagraph = new Paragraph(novelTitleText).setTextAlignment(TextAlignment.CENTER);
+            pdfDoc.add(novelTitleParagraph);
+
+            // Add chapter title
+            Text chapterTitleText = new Text(chapterTitle).setFont(font).setBold().setFontSize(15);
+            Paragraph chapterTitleParagraph = new Paragraph(chapterTitleText).setTextAlignment(TextAlignment.CENTER);
+            pdfDoc.add(chapterTitleParagraph);
+
+            // Add chapter content
+            Paragraph chapterContentParagraph = new Paragraph(chapterContent).setFont(font).setFontSize(12);
+            pdfDoc.add(chapterContentParagraph);
+
+            pdfDoc.close();
+
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
 }
