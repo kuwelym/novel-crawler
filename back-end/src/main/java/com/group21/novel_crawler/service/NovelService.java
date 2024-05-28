@@ -197,7 +197,7 @@ public class NovelService {
         return pageableData;
     }
 
-    public PageableData<Novel> getNovelDetail(String novelName, int page) {
+    public PageableData<Novel> getNovelDetails(String novelName, int page) {
         String baseUrl = "https://truyenfull.vn";
         Novel novel = new Novel();
         PageableData<Novel> pageableData = new PageableData<Novel>();
