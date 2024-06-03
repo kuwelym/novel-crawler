@@ -20,6 +20,10 @@
               aria-expanded="false"
               to="#"
             >
+            <span>
+              <font-awesome-icon :icon="['fas', 'list']" />
+            </span>
+            
               Danh sách
             </router-link>
             <ul class="dropdown-menu">
@@ -73,6 +77,9 @@
               aria-expanded="false"
               to="#"
             >
+            <span>
+              <font-awesome-icon :icon="['fas', 'list']" />
+            </span>
               Thể loại
             </router-link>
             <ul class="dropdown-menu multi-column">
@@ -182,6 +189,9 @@
               aria-expanded="false"
               to="#"
             >
+            <span>
+              <font-awesome-icon :icon="['fas', 'list']" />
+            </span>
               Phân loại theo chương
             </router-link>
             <ul class="dropdown-menu">
@@ -234,6 +244,9 @@
               aria-expanded="false"
               to="#"
             >
+            <span>
+              <font-awesome-icon :icon="['fas', 'gear']" />
+            </span>
               Tùy Chỉnh
             </router-link>
             <div
@@ -323,8 +336,8 @@
           />
           <div class="input-group-btn">
                   <button class="btn btn-default" type="submit" aria-label="Tìm kiếm" role="search">
-                    <span class="glyphicon glyphicon-search">
-                      <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    <span class="glyphicon">                   
+                      <font-awesome-icon :icon="['fas', 'magnifying-glass']" />
                     </span>
                   </button>
                 </div>
@@ -338,6 +351,11 @@
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faList, faGear, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+
+// Thêm các icon vào thư viện
+library.add(faList, faGear, faMagnifyingGlass);
 
 export default {
   name: "HeaderComponent",
@@ -360,6 +378,13 @@ export default {
     .container {
         max-width: 1170px!important;
     }
+}
+
+.btn-default {
+    height: 32px!important;
+    color: #333!important;
+    background-color: #fff!important;
+    border-color: #ccc;
 }
 
 .navbar {

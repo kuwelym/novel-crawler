@@ -52,7 +52,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -61,7 +62,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -70,7 +72,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -79,7 +82,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -88,7 +92,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -97,7 +102,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -106,7 +112,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -115,7 +122,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -124,7 +132,8 @@
     <div class="item top-1" itemscope itemtype="https://schema.org/Book">
       <a href="https://truyenfull.vn/tu-cam-270192/chuong-1/" itemprop="url">
         <span class="full-label"></span>
-        <img :src="storyImage"  alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
+        <img src="https://lh3.googleusercontent.com/pw/AIL4fc-BV58s_mFbXosakwhGx7lqwtD4g9zQ7_TLjLkSvx5zejJ2hzpbr6oWKD8LPs0NLJCwZpdLy_Rr5e7aDX6Q0PCAruHj8V6oh7J8K7v5AxQKbdkvANhGuafTrUUsS8hNSeHjX3rHXUF4drVko4g2rWBq=w215-h322-s-no?authuser=0" 
+         alt="Tự Cẩm" class="img-responsive item-img" itemprop="image" />
         <div class="title">
           <h3 itemprop="name">Tự Cẩm</h3>
         </div>
@@ -139,7 +148,6 @@
   
   <script>
 
-import storyImage from 'C:/Downloads/TKMT/novel-crawler/front-end/src/components/assets/images/tuCam.jpg';
 import HomePagePart2 from './HomePagePart2.vue'; // Adjust path as per your file structure
 
 //   import { getNovelDetail } from "@/services/apiService";
@@ -153,9 +161,6 @@ import HomePagePart2 from './HomePagePart2.vue'; // Adjust path as per your file
     HomePagePart2
   },
     data() {
-      return {
-        storyImage
-      };
     },
   };
   </script>
