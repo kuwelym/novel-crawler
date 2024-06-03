@@ -39,4 +39,6 @@ export default {
 .Pagination {
   justify-content: center;
 }
+
+
 </style>

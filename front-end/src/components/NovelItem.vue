@@ -57,6 +57,10 @@ export default {
   border: 1px solid #e7e7e7;
 }
 
+.novel-title {
+  display: block;
+}
+
 .novel-title,
 .novel-author {
   font-weight: bold;
