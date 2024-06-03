@@ -1,5 +1,3 @@
-
-
 <template>
     <div class="container clearfix list-index" id="list-index">
     <div class="list list-truyen list-new col-xs-12 col-sm-12 col-md-8 col-truyen-main">
