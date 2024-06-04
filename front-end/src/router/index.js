@@ -3,6 +3,7 @@ import HomePage from "../components/HomePage.vue";
 import NovelDetail from "../components/NovelDetail.vue";
 import NovelChapter from "../components/NovelChapter.vue";
 import HomePageTest from "../components/HomePageTest.vue";
+import ListItem from "../components/ListItem.vue"
 
 const routes = [
   {
@@ -29,6 +30,11 @@ const routes = [
     path: "/home",
     name: "HomePageTest",
     component: HomePageTest,
+  },
+  {
+    path: "/novel-list",
+    name: "ListItem",
+    component: ListItem,
   },
 ];
 

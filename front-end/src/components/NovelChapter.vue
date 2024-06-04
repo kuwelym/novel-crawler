@@ -17,6 +17,7 @@
           </span>
         </h2>
         <hr class="chapter-start" />
+        <!--      -->
         <div class="chapter-nav" id="chapter-nav-top">
           <div class="btn-group">
             <button
@@ -26,7 +27,7 @@
               :disabled="chapterNumber == 1"
             >
               <span class="glyphicon">
-                <FontAwesomeIcon class="font-click-left" icon={faChevronLeft} />
+                <font-awesome-icon class="font-click-left" :icon="['fas', 'chevron-left']" />
               </span>
               <span class="hidden-xs">Chương </span>trước
             </button>
@@ -38,6 +39,10 @@
               aria-expanded="false"
             >
               Download
+              <span class="glyphicon">
+                <font-awesome-icon :icon="['fas', 'download']" />
+              </span>
+              
             </button>
             
             <button
@@ -47,82 +52,13 @@
             >
               <span class="hidden-xs">Chương </span>tiếp
               <span class="glyphicon">
-                <FontAwesomeIcon class="font-click-list" icon={faRectangleList} />
+                <font-awesome-icon class="font-click-right" :icon="['fas', 'chevron-right']" />
               </span>
             </button>
-
-            <!-- <button
-              type="button"
-              class="btn btn-warning dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Điều chỉnh
-            </button>
-            <ul class="dropdown-menu">
-              <li>
-                <button class="dropdown-item" @click="handleFontSizeDecrease">
-                  Giảm cỡ chữ
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" @click="handleFontSizeIncrease">
-                  Tăng cỡ chữ
-                </button>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <label for="font-family-select" class="dropdown-item"
-                  >Chọn font chữ:</label
-                >
-                <select
-                  id="font-family-select"
-                  class="form-select"
-                  v-model="fontFamily"
-                >
-                  <option value="Arial, sans-serif" selected>Arial</option>
-                  <option value="Times New Roman, serif">
-                    Times New Roman
-                  </option>
-                  <option value="Courier New, monospace">Courier New</option>
-                </select>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <label for="font-color-picker" class="dropdown-item"
-                  >Chọn màu chữ:</label
-                >
-                <input
-                  type="color"
-                  id="font-color-picker"
-                  v-model="fontColor"
-                />
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <label for="line-height-select" class="dropdown-item"
-                  >Chọn khoảng cách dòng:</label
-                >
-                <select
-                  id="line-height-select"
-                  class="form-select"
-                  v-model="lineHeight"
-                  @change="handleLineHeightChange"
-                >
-                  <option value="1.0">1.0</option>
-                  <option value="1.2">1.2</option>
-                  <option value="1.5">1.5</option>
-                </select>
-              </li>
-            </ul> -->
           </div>
         </div>
+
+        <!----------------------------------------------------->
         <br />
         <hr class="chapter-end" />
        
@@ -143,16 +79,11 @@
               :disabled="chapterNumber == 1"
             >
               <span class="glyphicon">
-                <FontAwesomeIcon class="font-click-left" icon={faChevronLeft} />
+                <font-awesome-icon class="font-click-left" :icon="['fas', 'chevron-left']" />
               </span>
               <span class="hidden-xs">Chương </span>trước
             </button>
 
-            <!-- <button type="button" class="btn btn-success btn-chapter-nav chapter_jump btn-middle">
-                <span class='glyphicon'>
-                  <FontAwesomeIcon class='font-click-list' icon={faRectangleList} />
-                </span>
-            </button> -->
             <button
               type="button"
               class="btn btn-success btn-chapter-nav chapter_jump btn-middle"
@@ -160,7 +91,13 @@
               aria-expanded="false"
             >
               Download
+
+              <span class="glyphicon">
+                <font-awesome-icon :icon="['fas', 'download']" />
+              </span>
             </button>
+
+
             <button
               class="btn btn-success btn-chapter-nav btn-right"
               id="next_chap"
@@ -168,80 +105,10 @@
             >
               <span class="hidden-xs">Chương </span>tiếp
               <span class="glyphicon">
-                <FontAwesomeIcon class="font-click-list" icon={faRectangleList} />
+                <font-awesome-icon class="font-click-right" :icon="['fas', 'chevron-right']" />
               </span>
             </button>
 
-            <!-- <button
-              type="button"
-              class="btn btn-warning dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Điều chỉnh
-            </button> -->
-            <ul class="dropdown-menu">
-              <li>
-                <button class="dropdown-item" @click="handleFontSizeDecrease">
-                  Giảm cỡ chữ
-                </button>
-              </li>
-              <li>
-                <button class="dropdown-item" @click="handleFontSizeIncrease">
-                  Tăng cỡ chữ
-                </button>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <label for="font-family-select" class="dropdown-item"
-                  >Chọn font chữ:</label
-                >
-                <select
-                  id="font-family-select"
-                  class="form-select"
-                  v-model="fontFamily"
-                >
-                  <option value="Arial, sans-serif" selected>Arial</option>
-                  <option value="Times New Roman, serif">
-                    Times New Roman
-                  </option>
-                  <option value="Courier New, monospace">Courier New</option>
-                </select>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <label for="font-color-picker" class="dropdown-item"
-                  >Chọn màu chữ:</label
-                >
-                <input
-                  type="color"
-                  id="font-color-picker"
-                  v-model="fontColor"
-                />
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <label for="line-height-select" class="dropdown-item"
-                  >Chọn khoảng cách dòng:</label
-                >
-                <select
-                  id="line-height-select"
-                  class="form-select"
-                  v-model="lineHeight"
-                  @change="handleLineHeightChange"
-                >
-                  <option value="1.0">1.0</option>
-                  <option value="1.2">1.2</option>
-                  <option value="1.5">1.5</option>
-                </select>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -252,6 +119,10 @@
 
 <script>
 import { getNovelChapter } from "@/services/apiService";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChevronRight, faChevronLeft, faDownload } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faChevronRight, faChevronLeft, faDownload);
 
 export default {
   name: "NovelChapter",

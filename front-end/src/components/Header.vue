@@ -255,47 +255,57 @@
             >
               <form class="form-horizontal">
                 <div class="form-group form-group-sm row">
-                  <label class="col-sm-2 col-md-5 control-label">Màu Sắc</label>
+                  <label class="col-sm-2 col-md-5 control-label">Màu nền</label>
                   <div class="col-sm-5 col-md-7">
                     <select class="form-control" size="lg">
-                      <option value="all">Tất cả</option>
-                      <option value="1">Tiên Hiệp</option>
-                      <option value="2">Kiếm Hiệp</option>
-                      <option value="3">Ngôn Tình</option>
-                      <option value="13">Đam Mỹ</option>
-                      <option value="20">Quan Trường</option>
-                      <option value="6">Võng Du</option>
-                      <option value="5">Khoa Huyễn</option>
-                      <option value="39">Hệ Thống</option>
-                      <option value="8">Huyền Huyễn</option>
-                      <option value="7">Dị Giới</option>
-                      <option value="19">Dị Năng</option>
-                      <option value="10">Quân Sự</option>
+                      <option value="all">Xám nhạt</option>
+                      <option value="1">Xanh nhạt</option>
+                      <option value="2">Vàng nhạt</option>
+                      <option value="3">Xanh đậm</option>
+                      <option value="4">Hạt sạn</option>
+                      <option value="5">Vàng đậm</option>
                     </select>
                   </div>
                 </div>
                 <div class="form-group form-group-sm row">
-                  <label class="col-sm-2 col-md-5 control-label">Màu Sắc</label>
+                  <label class="col-sm-2 col-md-5 control-label">Font chữ</label>
                   <div class="col-sm-5 col-md-7">
                     <select class="form-control" size="lg">
-                      <option value="all">Tất cả</option>
-                      <option value="1">Tiên Hiệp</option>
-                      <option value="2">Kiếm Hiệp</option>
-                      <option value="3">Ngôn Tình</option>
-                      <option value="13">Đam Mỹ</option>
-                      <option value="20">Quan Trường</option>
-                      <option value="6">Võng Du</option>
-                      <option value="5">Khoa Huyễn</option>
-                      <option value="39">Hệ Thống</option>
-                      <option value="8">Huyền Huyễn</option>
-                      <option value="7">Dị Giới</option>
-                      <option value="19">Dị Năng</option>
-                      <option value="10">Quân Sự</option>
+                      <option value="all">Xám nhạt</option>
+                      <option value="1">Xanh nhạt</option>
+                      <option value="2">Vàng nhạt</option>
+                      <option value="3">Xanh đậm</option>
+                      <option value="4">Hạt sạn</option>
+                      <option value="5">Vàng đậm</option>
                     </select>
                   </div>
                 </div>
-               
-                
+                <div class="form-group form-group-sm row">
+                  <label class="col-sm-2 col-md-5 control-label">Size chữ</label>
+                  <div class="col-sm-5 col-md-7">
+                    <select class="form-control" size="lg">
+                      <option value="all">16</option>
+                      <option value="1">18</option>
+                      <option value="2">20</option>
+                      <option value="3">22</option>
+                      <option value="4">24</option>
+                      <option value="5">26</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group form-group-sm row">
+                  <label class="col-sm-2 col-md-5 control-label">Chiều cao dòng</label>
+                  <div class="col-sm-5 col-md-7">
+                    <select class="form-control" size="lg">
+                      <option value="all">100%</option>
+                      <option value="1">120%</option>
+                      <option value="2">140%</option>
+                      <option value="3">160%</option>
+                      <option value="4">180%</option>
+                      <option value="5">200%</option>
+                    </select>
+                  </div>
+                </div>
                 <div class="form-group form-group-sm row">
                   <label class="col-sm-2 col-md-5 control-label">Full khung</label>
                   <div class="col-sm-5 col-md-7 form-check">

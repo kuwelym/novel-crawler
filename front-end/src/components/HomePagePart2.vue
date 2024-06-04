@@ -5,11 +5,12 @@
         <h2>
           <a class="text-title" href="https://truyenfull.vn/danh-sach/truyen-moi/" title="Truyện mới">
             Truyện mới cập nhật
-            <FontAwesomeIcon class="glyphicon glyphicon-chevron-right ms-1" icon={faChevronRight} />
+            <span class="glyphicon glyphicon-menu-right">
+            <font-awesome-icon :icon="['fas', 'chevron-right']" />
+          </span>
           </a>
         </h2>
         <a href="https://truyenfull.vn/danh-sach/truyen-moi/" title="Truyện mới">
-          <span class="glyphicon glyphicon-menu-right"></span>
         </a>
         <select class="new-select form-select form-select-lg">
           <option value="all">Tất cả</option>
@@ -55,8 +56,9 @@
       </div>
       <div class="row" itemscope itemtype="https://schema.org/Book">
         <div class="col-xs-9 col-sm-6 col-md-5 col-title">
-          <FontAwesomeIcon class="glyphicon glyphicon-chevron-right me-1" icon={faChevronRight} />
-          <span></span>
+          <span class="glyphicon glyphicon-chevron-right me-1">
+            <font-awesome-icon :icon="['fas', 'chevron-right']" />
+          </span>
           <h3 itemprop="name">
             <a href="https://truyenfull.vn/hoi-am-cua-anh/" title="Hơi Ấm Của Anh" itemprop="url">
               Hơi Ấm Của Anh
@@ -86,8 +88,9 @@
       </div>
       <div class="row" itemscope itemtype="https://schema.org/Book">
         <div class="col-xs-9 col-sm-6 col-md-5 col-title">
-          <FontAwesomeIcon class="glyphicon glyphicon-chevron-right me-1" icon={faChevronRight} />
-          <span></span>
+          <span class="glyphicon glyphicon-chevron-right me-1">
+            <font-awesome-icon :icon="['fas', 'chevron-right']" />
+          </span>
           <h3 itemprop="name">
             <a href="https://truyenfull.vn/hoi-am-cua-anh/" title="Hơi Ấm Của Anh" itemprop="url">
               Hơi Ấm Của Anh
@@ -407,12 +410,14 @@
       
       <script>
     
-    
+    import { library } from '@fortawesome/fontawesome-svg-core';
+    import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
     //   import { getNovelDetail } from "@/services/apiService";
     //   import { scrollToTopSmooth } from "@/utils";
     //   import VPagination from "@hennge/vue3-pagination";
       import "@hennge/vue3-pagination/dist/vue3-pagination.css";
-      
+      library.add(faChevronRight);
+
       export default {
         name: "HomePagePart2",
         // components: {
@@ -661,18 +666,21 @@
   color: #4e4e4e;
 }
 
+
+
 @media (min-width: 992px) {
-  .list-index .col-truyen-side {
+
+  #list-index .col-truyen-side {
     top: 0;
     right: 0;
     position: absolute;
   }
 
-  .col-truyen-side {
+  #list-index .col-truyen-side {
     padding: 0 0 0 15px;
   }
 
-  .col-truyen-side .list.list-truyen {
+  #list-index .col-truyen-side .list.list-truyen {
     margin: 10px 0;
     padding-right: 14px;
     padding-left: 14px;
@@ -680,27 +688,19 @@
 }
 
 @media (max-width: 1024px) {
-  .col-truyen-side .list.list-truyen {
+  #list-index .col-truyen-side .list.list-truyen {
     padding: 0;
   }
 }
 
 @media (max-width: 991px) {
-  .container > .col-truyen-side {
+  #list-index .container > .col-truyen-side {
     padding-left: 0;
     padding-right: 0;
   }
 }
 
-
-@media (max-width: 992px) {
-  .col-truyen-side {
-    display: none;
-  }
-}
-
-
-.col-truyen-main {
+#list-index .col-truyen-main {
   padding: 0;
 }
 
@@ -761,14 +761,6 @@
 @media (min-width: 1025px) {
   .list {
     border: 0;
-  }
-}
-
-@media (min-width: 992px) {
-  .col-truyen-side {
-    top: 0;
-    right: 0;
-    position: absolute;
   }
 }
 
