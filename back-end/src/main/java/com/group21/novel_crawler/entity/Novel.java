@@ -13,15 +13,25 @@ import java.util.List;
 @Builder
 public class Novel {
     private String title;
+
     private String author;
+
     private String coverUrl;
+
+    private String nameUrl;
 
     private String description;
 
     private String status;
 
+    private Boolean isFull;
+
+    private String newestChapter;
+
+    private String timeOfNewEstChapter;
+
     private List<String> chapters;
 
-    private List<String> genres;
+    private List<Genre> genres;
 }
 

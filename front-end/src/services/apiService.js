@@ -1,55 +1,48 @@
-import axios from "axios";
+import axios from "../axios/axiosClient";
 
-const API_BASE_URL = "http://localhost:8080/api";
+export const getHeaderData = async () => {
+  const response = await axios.get(`/novels/header`);
+  return response.data;
+};
 
-export const getAllNovels = async (filter, page) => {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}/novels?filter=${filter}&page=${page}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
+export const getHomeData = async () => {
+  const response = await axios.get(`/novels`);
+  return response.data;
+};
+
+export const getNovelByType = async (type, page) => {
+  const response = await axios.get(`/novels/types?type=${type}&page=${page}`);
+  return response.data;
+};
+
+export const getNovelByGenre = async (genre, page) => {
+  const response = await axios.get(
+    `/novels/genres?genre=${genre}&page=${page}`
+  );
+  return response.data;
 };
 
 export const searchNovel = async (searchText, page) => {
-  try {
-    searchText = searchText.replace(/\s{2,}/g, " ").trim();
-    searchText = searchText.replace(/\s/g, "+");
+  searchText = searchText.replace(/\s{2,}/g, " ").trim();
+  searchText = searchText.replace(/\s/g, "+");
 
-    const response = await axios.post(`${API_BASE_URL}/novels/search`, {
-      searchText,
-      page,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
+  const response = await axios.post(`/novels/search`, {
+    searchText,
+    page,
+  });
+  return response.data;
 };
 
 export const getNovelDetail = async (novelName, page) => {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}/novels/detail?novelName=${novelName}&page=${page}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
+  const response = await axios.get(
+    `/novels/detail?novelName=${novelName}&page=${page}`
+  );
+  return response.data;
 };
 
 export const getNovelChapter = async (novelName, chapterNumber) => {
-  try {
-    const response = await axios.get(
-      `${API_BASE_URL}/novels/chapter?novelName=${novelName}&chapterNumber=${chapterNumber}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
+  const response = await axios.get(
+    `/novels/chapter?novelName=${novelName}&chapterNumber=${chapterNumber}`
+  );
+  return response.data;
 };

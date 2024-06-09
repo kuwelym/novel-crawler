@@ -1,8 +1,7 @@
 package com.group21.novel_crawler.service;
 
 import com.group21.novel_crawler.common.PageableData;
-import com.group21.novel_crawler.entity.ChapterNovel;
-import com.group21.novel_crawler.entity.Novel;
+import com.group21.novel_crawler.entity.*;
 import com.group21.novel_crawler.exception.InternalServerErrorException;
 import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.kernel.font.PdfFont;
@@ -24,17 +23,140 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class NovelService {
+    public HeaderData getHeaderData() {
+        HeaderData headerData = new HeaderData();
+        List<Genre> novelGenres = new ArrayList<>();
+        List<Genre> novelTypes = new ArrayList<>();
 
-    public PageableData<Novel> getAllNovels(String filter, int page) {
+        try {
+            String baseUrl = "https://truyenfull.vn/";
+            Document doc = Jsoup.connect(baseUrl).get();
+
+            // Get novel types
+            Elements novelTypeElements = doc.select(".navbar-nav > .dropdown > .dropdown-menu > li > a");
+            List<Genre> types = new ArrayList<>();
+            for (Element item : novelTypeElements) {
+               Genre type = new Genre();
+               type.setName(item.text());
+               type.setUrl(item.attr("href").split("/")[4]);
+               types.add(type);
+            }
+
+            types = types.subList(0, types.size() - 4);
+
+            // Get novel genres
+            Elements novelGenreElements = doc.select(".navbar-nav > .dropdown > .dropdown-menu.multi-column a");
+            List<Genre> genres = new ArrayList<>();
+            for (Element item : novelGenreElements) {
+                Genre genre = new Genre();
+                genre.setName(item.text());
+                genre.setUrl(item.attr("href").split("/")[4]);
+                genres.add(genre);
+            }
+
+            // Set types and genres to headerData
+            headerData.setNovelTypes(types);
+            headerData.setNovelGenres(genres);
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
+        return headerData;
+    }
+
+    public HomeData getHomeData() {
+        HomeData homeData = new HomeData();
+        List<Novel> hotNovelList = new ArrayList<>();
+        List<Novel> newNovelList = new ArrayList<>();
+        List<Genre> novelGenres = new ArrayList<>();
+
+        try {
+            String baseUrl = "https://truyenfull.vn/";
+            Document doc = Jsoup.connect(baseUrl).get();
+
+            // Get hot novels from index-intro
+            Element indexIntroDiv = doc.selectFirst("div.index-intro");
+            if (indexIntroDiv != null) {
+                Elements hotNovelElements = indexIntroDiv.select("div.item");
+                for (Element element : hotNovelElements) {
+                    // Get title, coverUrl, nameUrl of novel
+                    Novel novel = Novel.builder()
+                            .title(Objects.requireNonNull(element.selectFirst("h3[itemprop='name']")).text())
+                            .coverUrl(Objects.requireNonNull(element.selectFirst("img[itemprop='image']")).attr("src"))
+                            .nameUrl(Objects.requireNonNull(element.selectFirst("a")).attr("href").split("/")[3])
+                            .build();
+
+                    // Get status of novel
+                    novel.setIsFull(element.selectFirst("span.full-label") != null);
+
+                    // Add novel to list
+                    hotNovelList.add(novel);
+                }
+            }
+
+            // Get new novels from list-new
+            Element listNewDiv = doc.selectFirst("div.list.list-truyen.list-new.col-xs-12.col-sm-12.col-md-8.col-truyen-main");
+            if (listNewDiv != null) {
+                Elements newNovelElements = listNewDiv.select("div.row");
+                for (Element element : newNovelElements) {
+                    // Get title, nameUrl, newestChapter, timeOfNewEstChapter of novel
+                    Novel novel = Novel.builder()
+                            .title(Objects.requireNonNull(element.selectFirst("h3[itemprop='name']")).text())
+                            .nameUrl(Objects.requireNonNull(element.selectFirst("h3[itemprop='name'] a")).attr("href").split("/")[3])
+                            .newestChapter(Objects.requireNonNull(element.selectFirst("div.text-info a")).text().split(" ")[1])
+                            .timeOfNewEstChapter(Objects.requireNonNull(element.selectFirst("div.col-time")).text())
+                            .build();
+
+                    // Get genres of novel
+                    Elements genreElements = element.select("a[itemprop='genre']");
+                    List<Genre> genres = new ArrayList<>();
+                    for (Element genreElement : genreElements) {
+                        Genre genre = new Genre();
+                        genre.setName(genreElement.text());
+                        genre.setUrl(genreElement.attr("href").split("/")[4]);
+                        genres.add(genre);
+                    }
+                    novel.setGenres(genres);
+
+                    // Add novel to list
+                    newNovelList.add(novel);
+                }
+            }
+
+            // Get novel genres from list-cat
+            Element listCatDiv = doc.selectFirst("div.list.list-truyen.list-cat.col-xs-12");
+            if (listCatDiv != null) {
+                Elements genreElements = listCatDiv.select("div.col-xs-6 a");
+                for (Element element : genreElements) {
+                    Genre genre = new Genre();
+                    genre.setName(element.text());
+                    genre.setUrl(element.attr("href").split("/")[4]);
+                    novelGenres.add(genre);
+                }
+            }
+
+            // Set hotNovelList, newNovelList, novelGenres to homeData
+            homeData.setHotNovelList(hotNovelList);
+            homeData.setNewNovelList(newNovelList);
+            homeData.setNovelGenres(novelGenres);
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
+        return homeData;
+    }
+
+    public PageableData<Novel> getNovelByType(String type, int page) {
         PageableData<Novel> pageableData = new PageableData<Novel>();
         List<Novel> novelList = new ArrayList<>();
 
         try {
             String baseUrl = "https://truyenfull.vn/danh-sach/";
-            String url = String.format("%s%s/trang-%d", baseUrl, filter, page);
+            String url = String.format("%s%s/trang-%d", baseUrl, type, page);
 
             Document doc = Jsoup.connect(url).get();
 
@@ -59,7 +181,9 @@ public class NovelService {
                     Element titleElement = row.selectFirst("div.col-xs-7 h3.truyen-title a");
                     if (titleElement != null) {
                         String title = titleElement.text();
+                        String nameUrl = titleElement.attr("href").split("/")[3];
                         newNovel.setTitle(title);
+                        newNovel.setNameUrl(nameUrl);
                     }
 
                     // Get author from novel
@@ -67,6 +191,106 @@ public class NovelService {
                     if (authorElement != null) {
                         String author = authorElement.text();
                         newNovel.setAuthor(author);
+                    }
+
+                    // Get the newest chapter from novel
+                    Element chapterElement = row.selectFirst("div.text-info a");
+                    if (chapterElement != null) {
+                        String newestChapter = chapterElement.text().split(" ")[1];
+                        newNovel.setNewestChapter(newestChapter);
+                    }
+
+                    // Add newNovel to novelList
+                    novelList.add(newNovel);
+                }
+            }
+
+            // Get total pages
+            Element paginationUl = doc.selectFirst("ul.pagination.pagination-sm");
+
+            // If the pagination element is found
+            if (paginationUl != null) {
+                // Select all <a> elements inside
+                Elements pageLinks = paginationUl.select("a");
+
+                // If there is at least one <a> element
+                if (!pageLinks.isEmpty()) {
+                    // Get the second last element
+                    Element lastPageLink = pageLinks.get(pageLinks.size() - 2);
+
+                    // Get the value of the href attribute from this element
+                    String lastPageHref = lastPageLink.attr("href");
+
+                    // Extract the number of pages from the URL
+                    String[] parts = lastPageHref.split("/");
+                    String totalPagesStr = parts[parts.length - 1];
+                    totalPagesStr = totalPagesStr.replace("trang-", "").replace("/", "");
+                    int totalPages = Integer.parseInt(totalPagesStr);
+
+                    // Set total pages
+                    pageableData.setTotalPages(totalPages);
+                }
+
+                // Set novelList and size to pageableData
+                pageableData.setContent(novelList);
+                pageableData.setTotalElements(novelList.size());
+            }
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+
+        return pageableData;
+    }
+
+    public PageableData<Novel> getNovelByGenre(String genre, int page) {
+        PageableData<Novel> pageableData = new PageableData<Novel>();
+        List<Novel> novelList = new ArrayList<>();
+
+        try {
+            String baseUrl = "https://truyenfull.vn/the-loai/";
+            String url = String.format("%s%s/trang-%d", baseUrl, genre, page);
+
+            Document doc = Jsoup.connect(url).get();
+
+            // Select the element <div class="list-truyen">
+            Element listTruyenDiv = doc.selectFirst("div.list-truyen");
+
+            // Select all elements with class equals to "row"
+            if (listTruyenDiv != null) {
+                Elements rowElements = listTruyenDiv.select("div.row");
+                rowElements.removeIf(element -> "the-loai-show-ads".equals(element.id()));
+
+                for (Element row : rowElements) {
+                    Novel newNovel = new Novel();
+
+                    // Get cover URL from novel
+                    Element coverElement = row.selectFirst("div[data-classname='cover']");
+                    if (coverElement != null) {
+                        String coverUrl = coverElement.attr("data-image");
+                        newNovel.setCoverUrl(coverUrl);
+                    }
+
+                    // Get title from novel
+                    Element titleElement = row.selectFirst("div.col-xs-7 h3.truyen-title a");
+                    if (titleElement != null) {
+                        String title = titleElement.text();
+                        String nameUrl = titleElement.attr("href").split("/")[3];
+                        newNovel.setTitle(title);
+                        newNovel.setNameUrl(nameUrl);
+                    }
+
+                    // Get author from novel
+                    Element authorElement = row.selectFirst("div.col-xs-7 span.author");
+                    if (authorElement != null) {
+                        String author = authorElement.text();
+                        newNovel.setAuthor(author);
+                    }
+
+                    // Get the newest chapter from novel
+                    Element chapterElement = row.selectFirst("div.text-info a");
+                    if (chapterElement != null) {
+                        String newestChapter = chapterElement.text().split(" ")[1];
+                        newNovel.setNewestChapter(newestChapter);
                     }
 
                     // Add newNovel to novelList
@@ -141,7 +365,9 @@ public class NovelService {
                     Element titleElement = row.selectFirst("div.col-xs-7 h3.truyen-title a");
                     if (titleElement != null) {
                         String title = titleElement.text();
+                        String nameUrl = titleElement.attr("href").split("/")[3];
                         newNovel.setTitle(title);
+                        newNovel.setNameUrl(nameUrl);
                     }
 
                     // Get author from novel
@@ -149,6 +375,18 @@ public class NovelService {
                     if (authorElement != null) {
                         String author = authorElement.text();
                         newNovel.setAuthor(author);
+                    }
+
+                    // Get the newest chapter from novel
+                    Element chapterElement = row.selectFirst("div.text-info a");
+                    if (chapterElement != null) {
+                        if (chapterElement.text().split(" ").length == 1) {
+                            newNovel.setNewestChapter("0");
+                        }
+                        else {
+                            String newestChapter = chapterElement.text().split(" ")[1];
+                            newNovel.setNewestChapter(newestChapter);
+                        }
                     }
 
                     // Add newNovel to novelList
@@ -209,7 +447,7 @@ public class NovelService {
             Element novelInfoDiv = doc.selectFirst("div.col-xs-12.col-info-desc");
             if (novelInfoDiv != null) {
                 // Set novel title
-                String title = novelInfoDiv.selectFirst("h3.title").text();
+                String title = Objects.requireNonNull(novelInfoDiv.selectFirst("h3.title")).text();
                 novel.setTitle(title);
 
                 // Set cover URL
@@ -228,11 +466,13 @@ public class NovelService {
 
                 // Set genres
                 Elements genreElements = novelInfoDiv.select("div.info-holder div.info a[href~=the-loai]");
-                List<String> genres = new ArrayList<>();
+                List<Genre> genres = new ArrayList<>();
                 for (Element genreElement : genreElements) {
-                    genres.add(genreElement.text());
+                    Genre genre = new Genre();
+                    genre.setUrl(genreElement.attr("href").split("/")[4]);
+                    genre.setName(genreElement.text());
+                    genres.add(genre);
                 }
-
                 novel.setGenres(genres);
 
                 // Set status
@@ -267,18 +507,29 @@ public class NovelService {
 
             // Get total pages of chapter list
             Element paginationUl = doc.selectFirst("ul.pagination.pagination-sm");
+            int totalPages = 1;
 
-            // Get the last <li> element in the <ul>
-            Elements liElements = paginationUl.select("li");
-            Element lastPageLi = liElements.get(liElements.size() - 2);
+            if (paginationUl != null) {
+                // Get the last <li> element in the <ul>
+                Elements liElements = paginationUl.select("li");
+                Element activeLiElement = paginationUl.selectFirst("li.active");
 
-            String lastPageHref = lastPageLi.selectFirst("a").attr("href");
+                if (activeLiElement == liElements.get(liElements.size() - 2)) {
+                    String lastPageNumber = paginationUl.selectFirst("li.active").text().split(" ")[0];
+                    totalPages = Integer.parseInt(lastPageNumber);
+                }
+                else {
+                    Element lastPageLi = liElements.get(liElements.size() - 2);
 
-            // Extract the page number from the href attribute
-            String lastPageNumber = lastPageHref.replaceAll("^.*trang-(\\d+).*$", "$1");
+                    String lastPageHref = lastPageLi.selectFirst("a").attr("href");
 
-            // Extract the page number from the text
-            int totalPages = Integer.parseInt(lastPageNumber);
+                    // Extract the page number from the href attribute
+                    String lastPageNumber = lastPageHref.replaceAll("^.*trang-(\\d+).*$", "$1");
+
+                    // Extract the page number from the text
+                    totalPages = Integer.parseInt(lastPageNumber);
+                }
+            }
 
             pageableData.setContent(Collections.singletonList(novel));
             pageableData.setTotalPages(totalPages);

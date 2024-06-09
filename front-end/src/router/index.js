@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import HomePage from "../components/HomePage.vue";
 import NovelDetail from "../components/NovelDetail.vue";
+import NovelList from "../components/NovelList.vue";
 import NovelChapter from "../components/NovelChapter.vue";
-import HomePageTest from "../components/HomePageTest.vue";
 
 const routes = [
   {
@@ -11,9 +12,19 @@ const routes = [
     component: HomePage,
   },
   {
-    path: "/:filter",
-    name: "FilteredHomePage",
-    component: HomePage,
+    path: "/types/:type",
+    name: "NovelListType",
+    component: NovelList,
+  },
+  {
+    path: "/genres/:genre",
+    name: "NovelListGenre",
+    component: NovelList,
+  },
+  {
+    path: "/search",
+    name: "NovelListSearch",
+    component: NovelList,
   },
   {
     path: "/detail/:novelName",
@@ -24,11 +35,6 @@ const routes = [
     path: "/detail/:novelName/:chapterNumber",
     name: "NovelChapter",
     component: NovelChapter,
-  },
-  {
-    path: "/home",
-    name: "HomePageTest",
-    component: HomePageTest,
   },
 ];
 

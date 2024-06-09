@@ -4,6 +4,8 @@ import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.common.ResponseObject;
 import com.group21.novel_crawler.common.SearchObject;
 import com.group21.novel_crawler.entity.ChapterNovel;
+import com.group21.novel_crawler.entity.HeaderData;
+import com.group21.novel_crawler.entity.HomeData;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.service.NovelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +23,51 @@ public class NovelController {
     @Autowired
     private NovelService novelService;
 
-    @GetMapping
-    public ResponseEntity<ResponseObject> getAllNovels(
-            @RequestParam(defaultValue = "truyen-hot") String filter,
+    @GetMapping()
+    public ResponseEntity<ResponseObject> getHomeData() {
+       HomeData homeData = novelService.getHomeData();
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get home data successfully.")
+                        .data(homeData)
+                        .build()
+        );
+    }
+
+    @GetMapping("/header")
+    public ResponseEntity<ResponseObject> getHeaderData() {
+        HeaderData headerData = novelService.getHeaderData();
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get header data successfully.")
+                        .data(headerData)
+                        .build()
+        );
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<ResponseObject> getNovelByType(
+            @RequestParam(defaultValue = "truyen-hot") String type,
             @RequestParam(defaultValue = "1") int page
     ) {
-        PageableData<Novel> pageableData = novelService.getAllNovels(filter, page);
+        PageableData<Novel> pageableData = novelService.getNovelByType(type, page);
+        return ResponseEntity.ok(
+                ResponseObject.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Get all novels successfully.")
+                        .data(pageableData)
+                        .build()
+        );
+    }
+
+    @GetMapping("/genres")
+    public ResponseEntity<ResponseObject> getNovelByGenre(
+            @RequestParam(defaultValue = "tien-hiep") String genre,
+            @RequestParam(defaultValue = "1") int page
+    ) {
+        PageableData<Novel> pageableData = novelService.getNovelByGenre(genre, page);
         return ResponseEntity.ok(
                 ResponseObject.builder()
                         .statusCode(HttpStatus.OK.value())

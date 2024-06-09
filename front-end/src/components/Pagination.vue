@@ -22,8 +22,8 @@ export default {
   },
   computed: {
     ...mapState({
-      currentPage: (state) => state.currrentPage,
-      totalPages: (state) => state.totalPages,
+      currentPage: (state) => state.pagination.currrentPage,
+      totalPages: (state) => state.pagination.totalPages,
     }),
   },
   methods: {
@@ -39,6 +39,4 @@ export default {
 .Pagination {
   justify-content: center;
 }
-
-
 </style>
