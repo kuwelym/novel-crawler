@@ -358,17 +358,17 @@ export default {
 }
 
 @media (min-width: 992px) {
-  .list-index .col-truyen-side {
+  #list-index .col-truyen-side {
     top: 0;
     right: 0;
     position: absolute;
   }
 
-  .col-truyen-side {
+  #list-index .col-truyen-side {
     padding: 0 0 0 15px;
   }
 
-  .col-truyen-side .list.list-truyen {
+  #list-index .col-truyen-side .list.list-truyen {
     margin: 10px 0;
     padding-right: 14px;
     padding-left: 14px;
@@ -376,13 +376,13 @@ export default {
 }
 
 @media (max-width: 1024px) {
-  .col-truyen-side .list.list-truyen {
+  #list-index .col-truyen-side .list.list-truyen {
     padding: 0;
   }
 }
 
 @media (max-width: 991px) {
-  .container > .col-truyen-side {
+  #list-index .container > .col-truyen-side {
     padding-left: 0;
     padding-right: 0;
   }
@@ -455,14 +455,6 @@ export default {
 @media (min-width: 1025px) {
   .list {
     border: 0;
-  }
-}
-
-@media (min-width: 992px) {
-  .col-truyen-side {
-    top: 0;
-    right: 0;
-    position: absolute;
   }
 }
 

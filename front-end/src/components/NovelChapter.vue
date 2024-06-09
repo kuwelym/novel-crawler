@@ -16,6 +16,7 @@
           </span>
         </h2>
         <hr class="chapter-start" />
+        <!--      -->
         <div class="chapter-nav" id="chapter-nav-top">
           <div class="btn-group">
             <button
@@ -57,6 +58,8 @@
             </button>
           </div>
         </div>
+
+        <!----------------------------------------------------->
         <br />
         <hr class="chapter-end" />
 
@@ -92,7 +95,12 @@
               aria-expanded="false"
             >
               Download
+
+              <span class="glyphicon">
+                <font-awesome-icon :icon="['fas', 'download']" />
+              </span>
             </button>
+
             <button
               class="btn btn-success btn-chapter-nav btn-right"
               id="next_chap"
