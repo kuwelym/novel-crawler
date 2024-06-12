@@ -19,4 +19,8 @@ public interface NovelService {
     ChapterNovel getChapterNovel(String novelName, int chapterNumber);
 
     byte[] exportChapterToPdf(String novelName, int chapterNumber);
+
+    byte[] exportChapterToEpub(String novelName, int chapterNumber);
+
+    byte[] exportChapterToTxt(String novelName, int chapterNumber);
 }

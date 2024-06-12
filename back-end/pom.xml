@@ -53,6 +53,12 @@
             <type>pom</type>
         </dependency>
 
+        <dependency>
+            <groupId>com.positiondev.epublib</groupId>
+            <artifactId>epublib-core</artifactId>
+            <version>3.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

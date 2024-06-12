@@ -5,7 +5,7 @@ import com.group21.novel_crawler.entity.ChapterNovel;
 import com.group21.novel_crawler.entity.HeaderData;
 import com.group21.novel_crawler.entity.HomeData;
 import com.group21.novel_crawler.entity.Novel;
-import com.group21.novel_crawler.service.NovelPdfExporter;
+import com.group21.novel_crawler.service.NovelExporter;
 import com.group21.novel_crawler.service.NovelScraper;
 import com.group21.novel_crawler.service.NovelService;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ import org.springframework.stereotype.Service;
 public class NovelServiceImpl implements NovelService {
 
     private final NovelScraper novelScraper;
-    private final NovelPdfExporter novelPdfExporter;
+    private final NovelExporter novelExporter;
 
-    public NovelServiceImpl(NovelScraper novelScraper, NovelPdfExporter novelPdfExporter) {
+    public NovelServiceImpl(NovelScraper novelScraper, NovelExporter novelExporter) {
         this.novelScraper = novelScraper;
-        this.novelPdfExporter = novelPdfExporter;
+        this.novelExporter = novelExporter;
     }
     @Override
     public HomeData getHomeData() {
@@ -57,6 +57,16 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public byte[] exportChapterToPdf(String novelName, int chapterNumber) {
-        return novelPdfExporter.exportChapterToPdf(novelName, chapterNumber);
+        return novelExporter.exportChapterToPdf(novelName, chapterNumber);
+    }
+
+    @Override
+    public byte[] exportChapterToEpub(String novelName, int chapterNumber) {
+        return novelExporter.exportChapterToEpub(novelName, chapterNumber);
+    }
+
+    @Override
+    public byte[] exportChapterToTxt(String novelName, int chapterNumber) {
+        return novelExporter.exportChapterToTxt(novelName, chapterNumber);
     }
 }

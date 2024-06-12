@@ -9,9 +9,7 @@ import com.group21.novel_crawler.entity.HomeData;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.service.NovelService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -117,24 +115,6 @@ public class NovelController {
                         .data(chapterNovel)
                         .build()
         );
-    }
-
-    @GetMapping("/export")
-    public ResponseEntity<byte[]> exportChapterPdf(
-            @RequestParam(defaultValue = "") String novelName,
-            @RequestParam(defaultValue = "1") int chapterNumber
-    ) {
-        byte[] pdfBytes = novelService.exportChapterToPdf(novelName, chapterNumber);
-        String fileName = String.format("%s chapter-%d.pdf", novelName, chapterNumber);
-
-        // Set the appropriate HTTP headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_PDF);
-        headers.setContentDispositionFormData("attachment", fileName);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(pdfBytes);
     }
 }
 

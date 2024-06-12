@@ -11,20 +11,21 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 import lombok.Getter;
 import lombok.Setter;
+import nl.siegmann.epublib.domain.Book;
+import nl.siegmann.epublib.domain.Metadata;
+import nl.siegmann.epublib.domain.Resource;
+import nl.siegmann.epublib.epub.EpubWriter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 
-import java.io.ByteArrayOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 
 @Component
-public class NovelPdfExporter {
+public class NovelExporter {
 
     private static final String BASE_URL = "https://truyenfull.vn";
-    private static final String FONT_PATH = "src/main/resources/times.ttf";
 
     public byte[] exportChapterToPdf(String novelName, int chapterNumber) {
         try {
@@ -59,7 +60,7 @@ public class NovelPdfExporter {
         return element != null ? element.text() : "";
     }
 
-    private void createPdf(ByteArrayOutputStream outputStream, ChapterDetails chapterDetails) throws Exception {
+    private void createPdf(ByteArrayOutputStream outputStream, ChapterDetails chapterDetails) {
         PdfWriter writer = new PdfWriter(outputStream);
         PdfDocument pdfDocument = new PdfDocument(writer);
         PdfFont font = loadFont();
@@ -74,10 +75,63 @@ public class NovelPdfExporter {
         pdfDoc.close();
     }
 
-    private PdfFont loadFont() throws Exception {
-        byte[] fontBytes = Files.readAllBytes(Paths.get(NovelPdfExporter.FONT_PATH));
-        return PdfFontFactory.createFont(fontBytes, PdfEncodings.IDENTITY_H, true);
+    public byte[] exportChapterToEpub(String novelName, int chapterNumber) {
+        try {
+            ChapterDetails chapterDetails = fetchChapterDetails(novelName, chapterNumber);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            createEpub(outputStream, chapterDetails);
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
+
+    private void createEpub(ByteArrayOutputStream outputStream, ChapterDetails chapterDetails) throws Exception {
+        Book book = new Book();
+        Metadata metadata = book.getMetadata();
+        metadata.addTitle(chapterDetails.getNovelTitle());
+        metadata.addTitle(chapterDetails.getChapterTitle());
+
+        String htmlContent = "<html><head><title>" + chapterDetails.getChapterTitle() + "</title></head>"
+                + "<body>" + chapterDetails.getChapterContent() + "</body></html>";
+        book.addSection(chapterDetails.getChapterTitle(), new Resource(htmlContent.getBytes(), "chapter1.html"));
+
+        EpubWriter epubWriter = new EpubWriter();
+        epubWriter.write(book, outputStream);
+    }
+
+    public byte[] exportChapterToTxt(String novelName, int chapterNumber) {
+        try {
+            ChapterDetails chapterDetails = fetchChapterDetails(novelName, chapterNumber);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            createTxt(outputStream, chapterDetails);
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e.getMessage());
+        }
+    }
+
+    private void createTxt(ByteArrayOutputStream outputStream, ChapterDetails chapterDetails) throws Exception {
+        try (Writer writer = new OutputStreamWriter(outputStream)) {
+            writer.write(chapterDetails.getNovelTitle() + "\n");
+            writer.write(chapterDetails.getChapterTitle() + "\n");
+            writer.write(chapterDetails.getChapterContent());
+
+        }
+    }
+
+    private PdfFont loadFont() {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("times.ttf")) {
+            if (is == null) {
+                throw new InternalServerErrorException("Font file not found: times.ttf");
+            }
+            byte[] fontBytes = is.readAllBytes();
+            return PdfFontFactory.createFont(fontBytes, PdfEncodings.IDENTITY_H, true);
+        } catch (IOException e) {
+            throw new InternalServerErrorException("Failed to load font file: " + e.getMessage());
+        }
+    }
+
 
     private void addTitle(com.itextpdf.layout.Document pdfDoc, String text, PdfFont font, float fontSize) {
         Text titleText = new Text(text).setFont(font).setBold().setFontSize(fontSize);
