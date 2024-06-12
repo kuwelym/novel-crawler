@@ -21,6 +21,9 @@ public class NovelScraper {
 
     private static final String BASE_URL = "https://truyenfull.vn";
 
+    public NovelScraper() {
+    }
+
     private <T> T executeWithExceptionHandling(Supplier<T> function) {
         try {
             return function.get();
