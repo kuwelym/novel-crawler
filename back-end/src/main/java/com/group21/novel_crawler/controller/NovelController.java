@@ -8,7 +8,6 @@ import com.group21.novel_crawler.entity.HeaderData;
 import com.group21.novel_crawler.entity.HomeData;
 import com.group21.novel_crawler.entity.Novel;
 import com.group21.novel_crawler.service.NovelService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class NovelController {
 
-    @Autowired
-    private NovelService novelService;
+    private final NovelService novelService;
+
+    public NovelController(NovelService novelService) {
+        this.novelService = novelService;
+    }
 
     @GetMapping()
     public ResponseEntity<ResponseObject> getHomeData() {
