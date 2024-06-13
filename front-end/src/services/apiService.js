@@ -40,9 +40,13 @@ export const getNovelDetail = async (novelName, page) => {
   return response.data;
 };
 
-export const getNovelChapter = async (novelName, chapterNumber) => {
-  const response = await axios.get(
-    `/novels/chapter?novelName=${novelName}&chapterNumber=${chapterNumber}`
-  );
-  return response.data;
+export const getNovelChapter = async (serverName, novelName, chapterNumber) => {
+  try {
+    const response = await axios.get(
+      `/novels/chapter?serverName=${serverName}&novelName=${novelName}&chapterNumber=${chapterNumber}`
+    );
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
 };

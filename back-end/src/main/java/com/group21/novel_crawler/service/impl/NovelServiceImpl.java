@@ -51,8 +51,8 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    public ChapterNovel getChapterNovel(String novelName, int chapterNumber) {
-        return novelScraper.getChapterNovel(novelName, chapterNumber);
+    public ChapterNovel getChapterNovel(String serverName, String novelName, int chapterNumber) {
+        return novelScraper.getChapterNovel(serverName, novelName, chapterNumber);
     }
 
     @Override
