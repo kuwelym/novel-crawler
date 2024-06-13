@@ -44,10 +44,10 @@
         <div class="title-list">
           <h2>Danh sách chương</h2>
         </div>
-        <div class="row clearfix">
+        <div class="row clearfix align-items-start">
           <div class="col-md-6">
             <ul class="list-chapter">
-              <li v-for="(chapter, index) in novel.chapters" :key="index">
+              <li v-for="(chapter, index) in firstHalfChapters" :key="index">
                 <span class="glyphicon glyphicon-certificate"></span>
                 <router-link :to="chapterUrl(chapter)">
                   {{ chapter }}
@@ -55,9 +55,10 @@
               </li>
             </ul>
           </div>
+
           <div class="col-md-6">
             <ul class="list-chapter">
-              <li v-for="(chapter, index) in novel.chapters" :key="index">
+              <li v-for="(chapter, index) in secondHalfChapters" :key="index">
                 <span class="glyphicon glyphicon-certificate"></span>
                 <router-link :to="chapterUrl(chapter)">
                   {{ chapter }}
@@ -105,6 +106,12 @@ export default {
   computed: {
     novelNameUrl() {
       return this.$route.params.novelName;
+    },
+    firstHalfChapters() {
+      return this.novel.chapters.slice(0, 25);
+    },
+    secondHalfChapters() {
+      return this.novel.chapters.slice(25, 50);
     },
   },
   methods: {
