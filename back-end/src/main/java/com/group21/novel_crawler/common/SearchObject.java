@@ -1,11 +1,12 @@
 package com.group21.novel_crawler.common;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Value;
 
-@Data
+@Value
+@Builder
 public class SearchObject {
-    private String searchText;
-
-    private int page;
+    String searchText;
+    int page;
 }
 
