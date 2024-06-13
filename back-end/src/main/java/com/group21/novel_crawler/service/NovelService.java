@@ -16,7 +16,7 @@ public interface NovelService {
 
     PageableData<Novel> getNovelDetails(String novelName, int page);
 
-    ChapterNovel getChapterNovel(String novelName, int chapterNumber);
+    ChapterNovel getChapterNovel(String serverName ,String novelName, int chapterNumber);
 
     byte[] exportChapterToPdf(String novelName, int chapterNumber);
 

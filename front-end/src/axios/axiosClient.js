@@ -34,7 +34,7 @@ axiosClient.interceptors.response.use(
           $toast.error(data.message || "Not Found");
           break;
         case 500:
-          $toast.error(data.message || "Internal Server Error");
+          // $toast.error(data.message || "Internal Server Error");
           break;
         default:
           $toast.error(data.message || "An error occurred");

@@ -18,6 +18,32 @@
         <hr class="chapter-start" />
         <!--      -->
         <div class="chapter-nav" id="chapter-nav-top">
+          <div class="btn-group mb-2">
+            <button
+              type="button"
+              :class="{
+                'btn-success': serverName === '1',
+                'btn btn-secondary': true,
+              }"
+              @click="serverName = '1'"
+            >
+              Server 1
+            </button>
+
+            <button
+              :class="{
+                'btn-success': serverName === '2',
+                'btn btn-secondary mx-1': true,
+              }"
+              :disabled="isDisableServer2"
+              @click="serverName = '2'"
+            >
+              Server 2
+            </button>
+          </div>
+
+          <br />
+
           <div class="btn-group">
             <button
               class="btn btn-success btn-chapter-nav btn-left"
@@ -36,11 +62,19 @@
 
             <button
               type="button"
-              class="btn btn-success btn-chapter-nav chapter_jump btn-middle"
-              @click="handleDownloadChapter"
+              class="btn btn-success btn-chapter-nav chapter_jump btn-middle dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
             >
               Tải xuống
             </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </li>
+            </ul>
 
             <button
               class="btn btn-success btn-chapter-nav btn-right"
@@ -70,52 +104,6 @@
           v-html="content"
           :style="textStyle"
         ></div>
-        <hr class="chapter-end mt-3" />
-        <div class="chapter-nav" id="chapter-nav-top">
-          <div class="btn-group">
-            <button
-              class="btn btn-success btn-chapter-nav btn-left"
-              id="prev_chap"
-              @click="handleClickPreviousChap"
-              :disabled="chapterNumber == 1"
-            >
-              <span class="glyphicon">
-                <FontAwesomeIcon
-                  class="font-click-left"
-                  icon="{faChevronLeft}"
-                />
-              </span>
-              <span class="hidden-xs">Chương </span>trước
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-success btn-chapter-nav chapter_jump btn-middle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Download
-
-              <span class="glyphicon">
-                <font-awesome-icon :icon="['fas', 'download']" />
-              </span>
-            </button>
-
-            <button
-              class="btn btn-success btn-chapter-nav btn-right"
-              id="next_chap"
-              @click="handleClickNextChap"
-            >
-              <span class="hidden-xs">Chương </span>tiếp
-              <span class="glyphicon">
-                <FontAwesomeIcon
-                  class="font-click-list"
-                  icon="{faRectangleList}"
-                />
-              </span>
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -130,11 +118,13 @@ export default {
   name: "NovelChapter",
   data() {
     return {
+      serverName: "1",
       content: "",
       novelTitle: "",
       chapterTitle: "",
       isLoading: true,
       isNewestChapter: false,
+      isDisableServer2: false,
     };
   },
   computed: {
@@ -151,6 +141,7 @@ export default {
     async getNovelChapter() {
       // Call api get novel chapter
       const response = await getNovelChapter(
+        this.serverName,
         this.novelNameUrl,
         this.chapterNumber
       );
@@ -170,11 +161,21 @@ export default {
     },
     async checkIfNewestChapter() {
       const response = await getNovelChapter(
+        this.serverName,
         this.novelNameUrl,
         parseInt(this.chapterNumber) + 1
       );
 
       this.isNewestChapter = !response.data.chapterContent;
+    },
+    async checkDisableServer2() {
+      const response = await getNovelChapter(
+        "2",
+        this.novelNameUrl,
+        parseInt(this.chapterNumber) + 1
+      );
+
+      this.isDisableServer2 = response.statusCode === 500;
     },
     async handleClickNextChap() {
       const newChapterNumber = parseInt(this.chapterNumber) + 1;
@@ -183,6 +184,7 @@ export default {
       await this.$router.push("./" + newChapterNumber);
 
       await this.checkIfNewestChapter();
+      await this.checkDisableServer2();
       await this.getNovelChapter();
     },
     async handleClickPreviousChap() {
@@ -192,6 +194,7 @@ export default {
       await this.$router.push("./" + newChapterNumber);
 
       await this.checkIfNewestChapter();
+      await this.checkDisableServer2();
       await this.getNovelChapter();
     },
     handleDownloadChapter() {
@@ -201,8 +204,16 @@ export default {
       );
     },
   },
+  watch: {
+    async serverName() {
+      await this.checkIfNewestChapter();
+      await this.checkDisableServer2();
+      await this.getNovelChapter();
+    },
+  },
   async mounted() {
     await this.checkIfNewestChapter();
+    await this.checkDisableServer2();
     await this.getNovelChapter();
   },
 };

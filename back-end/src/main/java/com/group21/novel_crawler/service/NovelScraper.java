@@ -3,6 +3,7 @@ package com.group21.novel_crawler.service;
 import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.entity.*;
 import com.group21.novel_crawler.exception.InternalServerErrorException;
+import com.group21.novel_crawler.exception.ResourceNotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,7 +20,8 @@ import java.util.function.Supplier;
 @Component
 public class NovelScraper {
 
-    private static final String BASE_URL = "https://truyenfull.vn";
+    private static final String BASE_URL_1 = "https://truyenfull.vn";
+    private static final String BASE_URL_2 = "https://metruyenhot.com.vn";
 
     public NovelScraper() {
     }
@@ -37,7 +39,7 @@ public class NovelScraper {
             try {
                 return Jsoup.connect(url).get();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new ResourceNotFoundException(e.getMessage());
             }
         });
     }
@@ -68,7 +70,7 @@ public class NovelScraper {
 
     public HeaderData getHeaderData() {
         return executeWithExceptionHandling(() -> {
-            Document doc = getDocument(BASE_URL);
+            Document doc = getDocument(BASE_URL_1);
 
             Elements novelTypeElements = doc.select(".navbar-nav > .dropdown > .dropdown-menu > li > a");
             Elements novelGenreElements = doc.select(".navbar-nav > .dropdown > .dropdown-menu.multi-column a");
@@ -138,9 +140,9 @@ public class NovelScraper {
     public HomeData getHomeData() {
         return executeWithExceptionHandling(() -> {
             HomeData homeData = new HomeData();
-            List<Novel> hotNovelList = extractHotNovels(getDocument(BASE_URL));
-            List<Novel> newNovelList = extractNewNovels(getDocument(BASE_URL));
-            List<Genre> novelGenres = extractGenres(getDocument(BASE_URL));
+            List<Novel> hotNovelList = extractHotNovels(getDocument(BASE_URL_1));
+            List<Novel> newNovelList = extractNewNovels(getDocument(BASE_URL_1));
+            List<Genre> novelGenres = extractGenres(getDocument(BASE_URL_1));
 
             homeData.setHotNovelList(hotNovelList);
             homeData.setNewNovelList(newNovelList);
@@ -155,7 +157,7 @@ public class NovelScraper {
             PageableData<Novel> pageableData = new PageableData<>();
             List<Novel> novelList = new ArrayList<>();
 
-            String url = String.format("%s/danh-sach/%s/trang-%d", BASE_URL, type, page);
+            String url = String.format("%s/danh-sach/%s/trang-%d", BASE_URL_1, type, page);
             Document doc = getDocument(url);
 
             // Process novel list
@@ -236,7 +238,7 @@ public class NovelScraper {
             PageableData<Novel> pageableData = new PageableData<>();
             List<Novel> novelList = new ArrayList<>();
 
-            String url = String.format("%s/the-loai/%s/trang-%d", BASE_URL, genre, page);
+            String url = String.format("%s/the-loai/%s/trang-%d", BASE_URL_1, genre, page);
             Document doc = getDocument(url);
 
 
@@ -281,7 +283,7 @@ public class NovelScraper {
             PageableData<Novel> pageableData = new PageableData<>();
             List<Novel> novelList = new ArrayList<>();
 
-            String url = String.format("%s/tim-kiem/?tukhoa=%s&page=%s", BASE_URL, searchText, page);
+            String url = String.format("%s/tim-kiem/?tukhoa=%s&page=%s", BASE_URL_1, searchText, page);
 
             Document doc = getDocument(url);
 
@@ -300,7 +302,7 @@ public class NovelScraper {
 
     public PageableData<Novel> getNovelDetails(String novelName, int page) {
         return executeWithExceptionHandling(() -> {
-            String url = String.format("%s/%s/trang-%d/#list-chapter", BASE_URL, novelName, page);
+            String url = String.format("%s/%s/trang-%d/#list-chapter", BASE_URL_1, novelName, page);
             Document doc = getDocument(url);
 
             Novel novel = extractNovelDetails(doc);
@@ -390,38 +392,65 @@ public class NovelScraper {
         return totalPages;
     }
 
-
-    public ChapterNovel getChapterNovel(String novelName, int chapterNumber) {
+    public ChapterNovel getChapterNovel(String serverName, String novelName, int chapterNumber) {
         return executeWithExceptionHandling(() -> {
 
             ChapterNovel chapterNovel = new ChapterNovel();
             try {
-                String url = String.format("%s/%s/chuong-%d", BASE_URL, novelName, chapterNumber);
-                Document doc = getDocument(url);
+                if (serverName.equals("1")) {
+                    String url = String.format("%s/%s/chuong-%d", BASE_URL_1, novelName, chapterNumber);
+                    Document doc = getDocument(url);
 
-                // Get title
-                Element novelTitleElement = doc.selectFirst("a.truyen-title");
-                if (novelTitleElement != null) {
-                    String novelTitle = novelTitleElement.text();
-                    chapterNovel.setNovelTitle(novelTitle);
+                    // Get title
+                    Element novelTitleElement = doc.selectFirst("a.truyen-title");
+                    if (novelTitleElement != null) {
+                        String novelTitle = novelTitleElement.text();
+                        chapterNovel.setNovelTitle(novelTitle);
+                    }
+
+                    // Get chapter title
+                    Element chapterTitleElement = doc.selectFirst("h2 a.chapter-title");
+                    if (chapterTitleElement != null) {
+                        String chapterTitle = chapterTitleElement.text();
+                        chapterNovel.setChapterTitle(chapterTitle);
+                    }
+
+                    // Get content of the chapter novel
+                    Element chapterContentDiv = doc.selectFirst("div#chapter-c");
+                    if (chapterContentDiv != null) {
+                        chapterContentDiv.select(".ads-responsive").remove();
+                        String chapterContent = chapterContentDiv.html();
+                        chapterNovel.setChapterContent(chapterContent);
+                    }
                 }
+                else {
+                    String url = String.format("%s/%s/chuong-%d", BASE_URL_2, novelName, chapterNumber);
+                    Document doc = getDocument(url);
 
-                // Get chapter number
-                Element chapterTitleElement = doc.selectFirst("h2 a.chapter-title");
-                if (chapterTitleElement != null) {
-                    String chapterTitle = chapterTitleElement.text();
-                    chapterNovel.setChapterTitle(chapterTitle);
-                }
+                    // Get title
+                    Element novelTitleElement = doc.selectFirst("h1.rv-full-story-title");
+                    if (novelTitleElement != null) {
+                        String novelTitle = novelTitleElement.text();
+                        chapterNovel.setNovelTitle(novelTitle);
+                    }
 
-                // Get content of the chapter novel
-                Element chapterContentDiv = doc.selectFirst("div#chapter-c");
-                if (chapterContentDiv != null) {
-                    chapterContentDiv.select(".ads-responsive").remove();
-                    String chapterContent = chapterContentDiv.html();
-                    chapterNovel.setChapterContent(chapterContent);
+                    // Get chapter title
+                    Element chapterTitleElement = doc.selectFirst("div.rv-chapt-title a");
+                    if (chapterTitleElement != null) {
+                        String chapterTitle = chapterTitleElement.text();
+                        chapterNovel.setChapterTitle(chapterTitle);
+                    }
+
+                    // Get content of the chapter novel
+                    Element chapterContentDiv = doc.selectFirst("div.chapter-c");
+                    if (chapterContentDiv != null) {
+                        chapterContentDiv.select("div#content-metruyenhot").remove();
+                        String chapterContent = chapterContentDiv.html();
+                        chapterNovel.setChapterContent(chapterContent);
+                    }
                 }
             } catch (Exception e) {
-                throw new InternalServerErrorException(e.getMessage());
+                throw new ResourceNotFoundException(e.getMessage());
             }
 
             return chapterNovel;
