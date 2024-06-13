@@ -25,7 +25,7 @@ import java.io.*;
 @Component
 public class NovelExporter {
 
-    private static final String BASE_URL = "https://truyenfull.vn";
+    public static final String BASE_URL = "https://truyenfull.vn";
 
     public byte[] exportChapterToPdf(String novelName, int chapterNumber) {
         try {
@@ -38,7 +38,7 @@ public class NovelExporter {
         }
     }
 
-    private ChapterDetails fetchChapterDetails(String novelName, int chapterNumber) throws Exception {
+    public ChapterDetails fetchChapterDetails(String novelName, int chapterNumber) throws Exception {
         String url = String.format("%s/%s/chuong-%d", BASE_URL, novelName, chapterNumber);
         Document doc = Jsoup.connect(url).get();
 
@@ -146,7 +146,7 @@ public class NovelExporter {
 
     @Setter
     @Getter
-    private static class ChapterDetails {
+    public static class ChapterDetails {
         private String novelTitle;
         private String chapterTitle;
         private String chapterContent;
