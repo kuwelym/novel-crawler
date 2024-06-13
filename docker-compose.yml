@@ -8,27 +8,11 @@ services:
     container_name: novel-crawler-service
     ports:
       - "8080:8080"
+      - "5005:5005"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/novel_crawler?useSSL=false
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=abcd1234
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
-    restart: on-failure
-    container_name: novel-crawler-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: abcd1234
-      MYSQL_DATABASE: novel_crawler
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005,
     volumes:
-      - db-data:/var/lib/mysql
+      - ./back-end:/app
 
   frontend:
     build:
@@ -36,6 +20,5 @@ services:
     container_name: novel-crawler-frontend
     ports:
       - "3000:3000"
-
-volumes:
-  db-data:
+    depends_on:
+      - service
