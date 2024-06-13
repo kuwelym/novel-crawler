@@ -106,10 +106,11 @@ public class NovelController {
 
     @GetMapping("/chapter")
     public ResponseEntity<ResponseObject> getChapterNovel(
+            @RequestParam(defaultValue = "") String serverName,
             @RequestParam(defaultValue = "") String novelName,
             @RequestParam(defaultValue = "1") int chapterNumber
     ) {
-        ChapterNovel chapterNovel = novelService.getChapterNovel(novelName, chapterNumber);
+        ChapterNovel chapterNovel = novelService.getChapterNovel(serverName, novelName, chapterNumber);
         return ResponseEntity.ok(
                 ResponseObject.builder()
                         .statusCode(HttpStatus.OK.value())
