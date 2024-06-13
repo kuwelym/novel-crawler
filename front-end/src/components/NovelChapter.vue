@@ -69,10 +69,29 @@
               Tải xuống
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
               <li>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click="handleDownloadChapter('pdf')"
+                  >PDF</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click="handleDownloadChapter('txt')"
+                  >TXT</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click="handleDownloadChapter('epub')"
+                  >EPUB</a
+                >
               </li>
             </ul>
 
@@ -197,9 +216,9 @@ export default {
       await this.checkDisableServer2();
       await this.getNovelChapter();
     },
-    handleDownloadChapter() {
+    handleDownloadChapter(format) {
       window.open(
-        `http://localhost:8080/api/novels/export?novelName=${this.novelNameUrl}&chapterNumber=${this.chapterNumber}`,
+        `http://localhost:8080/api/novels/export/${format}?novelName=${this.novelNameUrl}&chapterNumber=${this.chapterNumber}`,
         "_blank"
       );
     },
