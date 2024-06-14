@@ -69,7 +69,7 @@
               Tải xuống
             </button>
             <ul class="dropdown-menu">
-              <li>
+              <li class="dropdown">
                 <a
                   class="dropdown-item"
                   href="#"
@@ -77,7 +77,7 @@
                   >PDF</a
                 >
               </li>
-              <li>
+              <li class="dropdown">
                 <a
                   class="dropdown-item"
                   href="#"
@@ -85,7 +85,7 @@
                   >TXT</a
                 >
               </li>
-              <li>
+              <li class="dropdown">
                 <a
                   class="dropdown-item"
                   href="#"
@@ -397,6 +397,44 @@ h6,
   color: #fff;
   background-color: #5cb85c !important;
   border-color: #4cae4c !important;
+}
+
+.btn-chapter-nav {
+  position: relative;
+  display: inline-block;
+}
+
+#chapter-big-container .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ccc;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-menu .dropdown-item {
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  color: #333;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #898989;
+}
+
+.btn-chapter-nav:hover .dropdown-menu,
+.btn-chapter-nav:focus .dropdown-menu,
+.dropdown-menu:hover {
+  display: block;
+}
+
+
+.btn-middle {
+  padding: 10px 20px;
+  font-size: 16px;
 }
 
 .chapter-c {
