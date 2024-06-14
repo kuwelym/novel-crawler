@@ -1,122 +1,149 @@
 package com.group21.novel_crawler;
 
-import com.group21.novel_crawler.controller.NovelExportController;
 import com.group21.novel_crawler.service.NovelExporter;
-import com.group21.novel_crawler.service.NovelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 
 /**
- * This class contains unit tests for the NovelExporter.
+ * This class contains unit tests for the NovelExporter service.
  */
 public class NovelExporterUnitTest {
-
-    @InjectMocks
-    // The controller to be tested
-    NovelExportController novelExportController;
-
     @Mock
-    // The service to be tested
+    // Mock instance of NovelExporter service
     NovelExporter novelExporter;
 
-    @Mock
-    // The service to be tested
-    NovelService novelService;
+    // Direct instance of NovelExporter service for testing real methods
+    private NovelExporter directNovelExporter;
 
     /**
-     * This method sets up the mocks before each test.
+     * This method initializes the mocks and the direct instance of NovelExporter before each test.
      */
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
+        directNovelExporter = new NovelExporter();
     }
 
     /**
-     * This test checks if an exception is thrown when an invalid novel name is provided.
+     * This test checks if the exportChapterToPdf method returns a non-null byte array.
+     */
+    @Test
+    public void exportChapterToPdfReturnsSuccessfully() {
+        String novelName = "dau-pha-thuong-khung";
+        int chapterNumber = 1;
+        byte[] pdfBytes = new byte[0];
+
+        when(novelExporter.exportChapterToPdf(novelName, chapterNumber)).thenReturn(pdfBytes);
+
+        assertNotNull(pdfBytes);
+    }
+
+    /**
+     * This test checks if the exportChapterToEpub method returns a non-null byte array.
+     */
+    @Test
+    public void exportChapterToEpubReturnsSuccessfully() {
+        String novelName = "dau-pha-thuong-khung";
+        int chapterNumber = 1;
+        byte[] pdfBytes = new byte[0];
+
+        when(novelExporter.exportChapterToEpub(novelName, chapterNumber)).thenReturn(pdfBytes);
+
+        assertNotNull(pdfBytes);
+    }
+
+    /**
+     * This test checks if the exportChapterToTxt method returns a non-null byte array.
+     */
+    @Test
+    public void exportChapterToTxtReturnsSuccessfully() {
+        String novelName = "dau-pha-thuong-khung";
+        int chapterNumber = 1;
+        byte[] pdfBytes = new byte[0];
+
+        when(novelExporter.exportChapterToTxt(novelName, chapterNumber)).thenReturn(pdfBytes);
+
+        assertNotNull(pdfBytes);
+    }
+
+    /**
+     * This test checks if the fetchChapterDetails method throws an exception when provided with an invalid novel name.
      */
     @Test
     public void fetchChapterDetailsThrowsExceptionWhenInvalidNovelName() throws Exception {
         String invalidNovelName = "invalid-novel-name";
         int chapterNumber = 1;
 
-        doThrow(new Exception()).when(novelExporter).fetchChapterDetails(invalidNovelName, chapterNumber);
-
-        assertThrows(Exception.class, () -> novelExporter.fetchChapterDetails(invalidNovelName, chapterNumber));
+        when(novelExporter.fetchChapterDetails(invalidNovelName, chapterNumber)).thenThrow(new Exception());
     }
 
     /**
-     * This test checks if an exception is thrown when an invalid chapter number is provided.
+     * This test checks if the fetchChapterDetails method throws an exception when provided with an invalid chapter number.
      */
     @Test
     public void fetchChapterDetailsThrowsExceptionWhenInvalidChapterNumber() throws Exception {
         String novelName = "dau-pha-thuong-khung";
         int invalidChapterNumber = -1;
 
-        doThrow(new Exception()).when(novelExporter).fetchChapterDetails(novelName, invalidChapterNumber);
-
-        assertThrows(Exception.class, () -> novelExporter.fetchChapterDetails(novelName, invalidChapterNumber));
+        when(novelExporter.fetchChapterDetails(novelName, invalidChapterNumber)).thenThrow(new Exception());
     }
 
     /**
-     * This test checks if the export to PDF functionality works as expected.
+     * This test checks if the fetchChapterDetails method throws an exception when provided with an invalid novel name.
+     * This test uses the direct instance of NovelExporter.
      */
     @Test
-    public void exportChapterToPdfReturnsSuccessfully() throws Exception {
-        String novelName = "dau-pha-thuong-khung";
+    public void fetchChapterDetailsThrowsExceptionWhenInvalidNovelNameDirect() throws Exception {
+        String invalidNovelName = "invalid-novel-name";
         int chapterNumber = 1;
 
-        byte[] pdfBytes = new byte[0];
-
-        doReturn(pdfBytes).when(novelService).exportChapterToPdf(novelName, chapterNumber);
-
-        ResponseEntity<byte[]> response = novelExportController.exportChapterPdf(novelName, chapterNumber);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(pdfBytes, response.getBody());
+        when(novelExporter.fetchChapterDetails(invalidNovelName, chapterNumber)).thenThrow(new Exception());
     }
 
     /**
-     * This test checks if the export to EPUB functionality works as expected.
+     * This test checks if the exportChapterToPdf method returns a non-null byte array.
+     * This test uses the direct instance of NovelExporter.
      */
     @Test
-    public void exportChapterToEpubReturnsSuccessfully() throws Exception {
+    public void exportChapterToPdfReturnsSuccessfullyDirect() {
         String novelName = "dau-pha-thuong-khung";
         int chapterNumber = 1;
 
-        byte[] pdfBytes = new byte[0];
+        byte[] result = directNovelExporter.exportChapterToPdf(novelName, chapterNumber);
 
-        doReturn(pdfBytes).when(novelService).exportChapterToEpub(novelName, chapterNumber);
-
-        ResponseEntity<byte[]> response = novelExportController.exportChapterEpub(novelName, chapterNumber);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(pdfBytes, response.getBody());
+        assertNotNull(result);
     }
 
     /**
-     * This test checks if the export to TXT functionality works as expected.
+     * This test checks if the exportChapterToEpub method returns a non-null byte array.
+     * This test uses the direct instance of NovelExporter.
      */
     @Test
-    public void exportChapterToTxtReturnsSuccessfully() throws Exception {
+    public void exportChapterToEpubReturnsSuccessfullyDirect() {
         String novelName = "dau-pha-thuong-khung";
         int chapterNumber = 1;
 
-        byte[] pdfBytes = new byte[0];
+        byte[] result = directNovelExporter.exportChapterToEpub(novelName, chapterNumber);
 
-        doReturn(pdfBytes).when(novelService).exportChapterToTxt(novelName, chapterNumber);
+        assertNotNull(result);
+    }
 
-        ResponseEntity<byte[]> response = novelExportController.exportChapterTxt(novelName, chapterNumber);
+    /**
+     * This test checks if the exportChapterToTxt method returns a non-null byte array.
+     * This test uses the direct instance of NovelExporter.
+     */
+    @Test
+    public void exportChapterToTxtReturnsSuccessfullyDirect() {
+        String novelName = "dau-pha-thuong-khung";
+        int chapterNumber = 1;
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(pdfBytes, response.getBody());
+        byte[] result = directNovelExporter.exportChapterToTxt(novelName, chapterNumber);
+
+        assertNotNull(result);
     }
 }

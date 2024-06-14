@@ -13,19 +13,32 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class NovelScraperTest {
+/**
+ * This class contains unit tests for the NovelScraper service.
+ * It tests the service's methods by mocking the service and verifying the results.
+ */
+class NovelScraperUnitTest {
 
     @Mock
     private NovelScraper novelScraper;
 
     private NovelScraper directNovelScraper;
 
+    /**
+     * This method sets up the test environment before each test.
+     * It initializes the mocked and direct instances of NovelScraper.
+     */
     @BeforeEach
     void setUp() {
         novelScraper = mock(NovelScraper.class);
         directNovelScraper = new NovelScraper();
     }
 
+    /**
+     * This test verifies the getHeaderData method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getHeaderData()
+     */
     @Test
     void testGetHeaderData() {
         // Prepare test data
@@ -58,6 +71,11 @@ class NovelScraperTest {
         verify(novelScraper, times(1)).getHeaderData();
     }
 
+    /**
+     * This test verifies the getHomeData method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getHomeData()
+     */
     @Test
     void testGetHomeData() {
         // Prepare test data
@@ -96,6 +114,11 @@ class NovelScraperTest {
     }
 
 
+    /**
+     * This test verifies the getNovelByType method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getNovelByType(String, int)
+     */
     @Test
     void testGetNovelByType() {
         PageableData<Novel> novels = new PageableData<>();
@@ -109,6 +132,11 @@ class NovelScraperTest {
         assertEquals(2, result.getContent().size());
     }
 
+    /**
+     * This test verifies the getNovelByGenre method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getNovelByGenre(String, int)
+     */
     @Test
     void testGetNovelByGenre() {
         PageableData<Novel> novels = new PageableData<>();
@@ -122,6 +150,11 @@ class NovelScraperTest {
         assertEquals(2, result.getContent().size());
     }
 
+    /**
+     * This test verifies the searchNovel method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#searchNovel(String, int)
+     */
     @Test
     void testSearchNovel() {
         PageableData<Novel> novels = new PageableData<>();
@@ -135,6 +168,11 @@ class NovelScraperTest {
         assertEquals(2, result.getContent().size());
     }
 
+    /**
+     * This test verifies the getNovelDetails method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getNovelDetails(String, int)
+     */
     @Test
     void testGetNovelDetails() {
         PageableData<Novel> novelDetails = new PageableData<>();
@@ -148,6 +186,11 @@ class NovelScraperTest {
         assertEquals(2, result.getContent().size());
     }
 
+    /**
+     * This test verifies the getChapterNovel method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getChapterNovel(String, String, int)
+     */
     @Test
     void testGetNovelByTypeInvalidType() {
         when(novelScraper.getNovelByType("invalid-type", 1)).thenReturn(new PageableData<>());
@@ -157,6 +200,11 @@ class NovelScraperTest {
         assertNull(result.getContent());
     }
 
+    /**
+     * This test verifies the getNovelByGenre method of the NovelScraper service.
+     * It prepares test data, mocks the service method, performs the test, asserts the result, and verifies the method call.
+     * @see NovelScraper#getNovelByGenre(String, int)
+     */
     @Test
     void testGetNovelByGenreInvalidGenre() {
         when(novelScraper.getNovelByGenre("invalid-genre", 1)).thenReturn(new PageableData<>());
