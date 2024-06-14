@@ -1,4 +1,4 @@
-package com.group21.novel_crawler.integration;
+package com.group21.novel_crawler;
 
 import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.entity.ChapterNovel;
@@ -24,6 +24,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Integration tests for the NovelController.
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 public class NovelControllerIntegrationTest {
@@ -34,10 +37,18 @@ public class NovelControllerIntegrationTest {
     @MockBean
     private NovelService novelService;
 
+    /**
+     * Set up the test environment before each test.
+     */
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
+    /**
+     * Test the getHomeData endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testGetHomeData() throws Exception {
         HomeData homeData = new HomeData();
@@ -50,6 +61,10 @@ public class NovelControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
+    /**
+     * Test the getHeaderData endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testGetHeaderData() throws Exception {
         HeaderData headerData = new HeaderData();
@@ -62,6 +77,10 @@ public class NovelControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
+    /**
+     * Test the getNovelByType endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testGetNovelByType() throws Exception {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -76,6 +95,10 @@ public class NovelControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
+    /**
+     * Test the getNovelByGenre endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testGetNovelByGenre() throws Exception {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -90,6 +113,10 @@ public class NovelControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
+    /**
+     * Test the searchNovel endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testSearchNovel() throws Exception {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -104,6 +131,10 @@ public class NovelControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
+    /**
+     * Test the getNovelDetail endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testGetNovelDetail() throws Exception {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -118,13 +149,18 @@ public class NovelControllerIntegrationTest {
                 .andExpect(jsonPath("$.data").isNotEmpty());
     }
 
+    /**
+     * Test the getChapterNovel endpoint.
+     * @throws Exception if any error occurs during the test
+     */
     @Test
     public void testGetChapterNovel() throws Exception {
         ChapterNovel chapterNovel = new ChapterNovel();
 
-        when(novelService.getChapterNovel(anyString(), anyInt())).thenReturn(chapterNovel);
+        when(novelService.getChapterNovel(anyString(), anyString(), anyInt())).thenReturn(chapterNovel);
 
         mockMvc.perform(get("/api/novels/chapter")
+                        .param("serverName", "server-name")
                         .param("novelName", "novel-name")
                         .param("chapterNumber", "1"))
                 .andExpect(status().isOk())

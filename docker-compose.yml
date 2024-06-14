@@ -8,11 +8,11 @@ services:
     container_name: novel-crawler-service
     ports:
       - "8080:8080"
-      - "5005:5005"
+      - "5005:5005" # Remote debugging port
     environment:
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005,
     volumes:
-      - ./back-end:/app
+      - ./back-end:/app # Mount the back-end directory to the container
 
   frontend:
     build:

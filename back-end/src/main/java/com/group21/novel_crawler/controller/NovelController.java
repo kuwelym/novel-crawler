@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller for handling requests related to novels.
+ */
 @RestController
 @RequestMapping("/api/novels")
 @CrossOrigin
@@ -19,13 +22,23 @@ public class NovelController {
 
     private final NovelService novelService;
 
+    /**
+     * Constructor for NovelController.
+     *
+     * @param novelService the service to handle novel-related operations
+     */
     public NovelController(NovelService novelService) {
         this.novelService = novelService;
     }
 
+    /**
+     * Endpoint to get home data.
+     *
+     * @return ResponseEntity with the home data
+     */
     @GetMapping()
     public ResponseEntity<ResponseObject> getHomeData() {
-       HomeData homeData = novelService.getHomeData();
+        HomeData homeData = novelService.getHomeData();
         return ResponseEntity.ok(
                 ResponseObject.builder()
                         .statusCode(HttpStatus.OK.value())
@@ -35,6 +48,11 @@ public class NovelController {
         );
     }
 
+    /**
+     * Endpoint to get header data.
+     *
+     * @return ResponseEntity with the header data
+     */
     @GetMapping("/header")
     public ResponseEntity<ResponseObject> getHeaderData() {
         HeaderData headerData = novelService.getHeaderData();
@@ -47,6 +65,13 @@ public class NovelController {
         );
     }
 
+    /**
+     * Endpoint to get novels by type.
+     *
+     * @param type the type of the novel
+     * @param page the page number
+     * @return ResponseEntity with the novels of the given type
+     */
     @GetMapping("/types")
     public ResponseEntity<ResponseObject> getNovelByType(
             @RequestParam(defaultValue = "truyen-hot") String type,
@@ -62,6 +87,13 @@ public class NovelController {
         );
     }
 
+    /**
+     * Endpoint to get novels by genre.
+     *
+     * @param genre the genre of the novel
+     * @param page the page number
+     * @return ResponseEntity with the novels of the given genre
+     */
     @GetMapping("/genres")
     public ResponseEntity<ResponseObject> getNovelByGenre(
             @RequestParam(defaultValue = "tien-hiep") String genre,
@@ -77,6 +109,12 @@ public class NovelController {
         );
     }
 
+    /**
+     * Endpoint to search for novels.
+     *
+     * @param searchObject the object containing the search text and page number
+     * @return ResponseEntity with the search results
+     */
     @PostMapping("/search")
     public ResponseEntity<ResponseObject> searchNovel(@RequestBody SearchObject searchObject) {
         PageableData<Novel> pageableData = novelService.searchNovel(searchObject.getSearchText(), searchObject.getPage());
@@ -89,6 +127,13 @@ public class NovelController {
         );
     }
 
+    /**
+     * Endpoint to get novel details.
+     *
+     * @param novelName the name of the novel
+     * @param page the page number
+     * @return ResponseEntity with the novel details
+     */
     @GetMapping("/detail")
     public ResponseEntity<ResponseObject> getNovelDetail(
             @RequestParam(defaultValue = "") String novelName,
@@ -104,6 +149,14 @@ public class NovelController {
         );
     }
 
+    /**
+     * Endpoint to get a novel chapter.
+     *
+     * @param serverName the server name
+     * @param novelName the name of the novel
+     * @param chapterNumber the chapter number
+     * @return ResponseEntity with the novel chapter
+     */
     @GetMapping("/chapter")
     public ResponseEntity<ResponseObject> getChapterNovel(
             @RequestParam(defaultValue = "") String serverName,
@@ -120,4 +173,3 @@ public class NovelController {
         );
     }
 }
-
