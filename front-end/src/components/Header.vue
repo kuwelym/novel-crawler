@@ -2,10 +2,12 @@
   <nav class="navbar navbar-default navbar-static-top" id="headerId">
     <div class="container">
       <div class="navbar-header">
-        <router-link class="header-logo" to="/" />
+        <router-link to="/">
+      <img :src="imageSrc"  class="header-logo" alt="logo">
+    </router-link>
       </div>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="control nav navbar-nav">
+        <ul class="control nav navbar-nav nav-edit">
           <!-- Types -->
           <li class="dropdown">
             <router-link
@@ -246,6 +248,7 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { getHeaderData } from "@/services/apiService";
+import myImage from '@/assets/images/logo-transparent-png.png';
 
 library.add(faList, faGear, faMagnifyingGlass);
 
@@ -255,6 +258,7 @@ export default {
     return {
       novelGenres: [],
       novelTypes: [],
+      imageSrc: myImage
     };
   },
   computed: {
@@ -360,13 +364,9 @@ export default {
 .header-logo {
   display: block;
   width: 196px;
-  height: 36px;
-  background: url(//static.8cache.com/img/spriteimg_new_white_op.png) no-repeat
-    0 0;
   text-indent: -9999px;
   white-space: nowrap;
   outline: none;
-  margin: 5px 5px 0 0;
 }
 
 .navbar-default .navbar-collapse {
@@ -391,6 +391,10 @@ export default {
   flex-direction: row !important;
   float: left;
   margin: 0;
+}
+
+.nav-edit {
+  margin-left: 20px;
 }
 
 .navbar-header {
@@ -477,12 +481,11 @@ export default {
   border-top-left-radius: 0 !important;
 }
 
-.dropdown-menu {
+#headerId .dropdown-menu {
   position: absolute !important;
   top: 100% !important;
   left: 0 !important;
   z-index: 1000 !important;
-  display: none;
   float: left !important;
   min-width: 160px !important;
   padding: 5px 0 !important;
@@ -490,7 +493,7 @@ export default {
   list-style: none !important;
   font-size: 14px !important;
   text-align: left !important;
-  background-color: #fff !important;
+  background-color: #fff;
   border: 1px solid #ccc !important;
   border: 1px solid rgba(0, 0, 0, 0.15) !important;
   border-radius: 4px !important;
