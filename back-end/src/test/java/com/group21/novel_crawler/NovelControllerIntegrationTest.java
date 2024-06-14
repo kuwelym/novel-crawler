@@ -48,6 +48,7 @@ public class NovelControllerIntegrationTest {
     /**
      * Test the getHomeData endpoint.
      * @throws Exception if any error occurs during the test
+     * @see NovelService#getHomeData()
      */
     @Test
     public void testGetHomeData() throws Exception {
