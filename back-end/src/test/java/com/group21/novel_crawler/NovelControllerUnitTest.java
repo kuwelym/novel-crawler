@@ -1,4 +1,4 @@
-package com.group21.novel_crawler.unit;
+package com.group21.novel_crawler;
 
 import com.group21.novel_crawler.common.PageableData;
 import com.group21.novel_crawler.common.ResponseObject;
@@ -18,7 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class NovelControllerTest {
+/**
+ * This class contains unit tests for the NovelController class.
+ */
+public class NovelControllerUnitTest {
 
     @InjectMocks
     NovelController novelController;
@@ -26,11 +29,17 @@ public class NovelControllerTest {
     @Mock
     NovelService novelService;
 
+    /**
+     * This method is executed before each test. It initializes the mocks.
+     */
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * Test case for successful retrieval of home data.
+     */
     @Test
     public void getHomeDataReturnsSuccessfully() {
         HomeData homeData = new HomeData();
@@ -42,6 +51,9 @@ public class NovelControllerTest {
         assertEquals(homeData, response.getBody().getData());
     }
 
+    /**
+     * Test case for successful retrieval of header data.
+     */
     @Test
     public void getHeaderDataReturnsSuccessfully() {
         HeaderData headerData = new HeaderData();
@@ -53,6 +65,9 @@ public class NovelControllerTest {
         assertEquals(headerData, response.getBody().getData());
     }
 
+    /**
+     * Test case for successful retrieval of novels by type.
+     */
     @Test
     public void getNovelByTypeReturnsSuccessfully() {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -64,6 +79,9 @@ public class NovelControllerTest {
         assertEquals(pageableData, response.getBody().getData());
     }
 
+    /**
+     * Test case for successful retrieval of novels by genre.
+     */
     @Test
     public void getNovelByGenreReturnsSuccessfully() {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -75,6 +93,9 @@ public class NovelControllerTest {
         assertEquals(pageableData, response.getBody().getData());
     }
 
+    /**
+     * Test case for successful novel search.
+     */
     @Test
     public void searchNovelReturnsSuccessfully() {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -91,6 +112,9 @@ public class NovelControllerTest {
         assertEquals(pageableData, response.getBody().getData());
     }
 
+    /**
+     * Test case for successful retrieval of novel details.
+     */
     @Test
     public void getNovelDetailReturnsSuccessfully() {
         PageableData<Novel> pageableData = new PageableData<>();
@@ -102,17 +126,23 @@ public class NovelControllerTest {
         assertEquals(pageableData, response.getBody().getData());
     }
 
+    /**
+     * Test case for successful retrieval of novel chapter.
+     */
     @Test
     public void getChapterNovelReturnsSuccessfully() {
         ChapterNovel chapterNovel = new ChapterNovel();
-        when(novelService.getChapterNovel("novelName", 1)).thenReturn(chapterNovel);
+        when(novelService.getChapterNovel("serverName","novelName", 1)).thenReturn(chapterNovel);
 
-        ResponseEntity<ResponseObject> response = novelController.getChapterNovel("novelName", 1);
+        ResponseEntity<ResponseObject> response = novelController.getChapterNovel("serverName", "novelName", 1);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(chapterNovel, response.getBody().getData());
     }
 
+    /**
+     * Test case for error during retrieval of home data.
+     */
     @Test
     public void getHomeDataReturnsError() {
         when(novelService.getHomeData()).thenThrow(new RuntimeException("Unexpected error"));
@@ -120,6 +150,9 @@ public class NovelControllerTest {
         assertThrows(RuntimeException.class, () -> novelController.getHomeData());
     }
 
+    /**
+     * Test case for error during retrieval of header data.
+     */
     @Test
     public void getHeaderDataReturnsError() {
         when(novelService.getHeaderData()).thenThrow(new RuntimeException("Unexpected error"));
@@ -127,6 +160,9 @@ public class NovelControllerTest {
         assertThrows(RuntimeException.class, () -> novelController.getHeaderData());
     }
 
+    /**
+     * Test case for error during retrieval of novels by type.
+     */
     @Test
     public void getNovelByTypeReturnsError() {
         when(novelService.getNovelByType("truyen-hot", 1)).thenThrow(new RuntimeException("Unexpected error"));
@@ -134,6 +170,9 @@ public class NovelControllerTest {
         assertThrows(RuntimeException.class, () -> novelController.getNovelByType("truyen-hot", 1));
     }
 
+    /**
+     * Test case for error during retrieval of novels by genre.
+     */
     @Test
     public void getNovelByGenreReturnsError() {
         when(novelService.getNovelByGenre("tien-hiep", 1)).thenThrow(new RuntimeException("Unexpected error"));
@@ -141,6 +180,9 @@ public class NovelControllerTest {
         assertThrows(RuntimeException.class, () -> novelController.getNovelByGenre("tien-hiep", 1));
     }
 
+    /**
+     * Test case for error during novel search.
+     */
     @Test
     public void searchNovelReturnsError() {
         SearchObject searchObject =
@@ -153,6 +195,9 @@ public class NovelControllerTest {
         assertThrows(RuntimeException.class, () -> novelController.searchNovel(searchObject));
     }
 
+    /**
+     * Test case for error during retrieval of novel details.
+     */
     @Test
     public void getNovelDetailReturnsError() {
         when(novelService.getNovelDetails("novelName", 1)).thenThrow(new RuntimeException("Unexpected error"));
@@ -160,10 +205,13 @@ public class NovelControllerTest {
         assertThrows(RuntimeException.class, () -> novelController.getNovelDetail("novelName", 1));
     }
 
+    /**
+     * Test case for error during retrieval of novel chapter.
+     */
     @Test
     public void getChapterNovelReturnsError() {
-        when(novelService.getChapterNovel("novelName", 1)).thenThrow(new RuntimeException("Unexpected error"));
+        when(novelService.getChapterNovel("serverName", "novelName", 1)).thenThrow(new RuntimeException("Unexpected error"));
 
-        assertThrows(RuntimeException.class, () -> novelController.getChapterNovel("novelName", 1));
+        assertThrows(RuntimeException.class, () -> novelController.getChapterNovel("serverName", "novelName", 1));
     }
 }

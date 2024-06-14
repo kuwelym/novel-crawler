@@ -396,61 +396,56 @@ public class NovelScraper {
         return executeWithExceptionHandling(() -> {
 
             ChapterNovel chapterNovel = new ChapterNovel();
-            try {
-                if (serverName.equals("1")) {
-                    String url = String.format("%s/%s/chuong-%d", BASE_URL_1, novelName, chapterNumber);
-                    Document doc = getDocument(url);
+            if (serverName.equals("1")) {
+                String url = String.format("%s/%s/chuong-%d", BASE_URL_1, novelName, chapterNumber);
+                Document doc = getDocument(url);
 
-                    // Get title
-                    Element novelTitleElement = doc.selectFirst("a.truyen-title");
-                    if (novelTitleElement != null) {
-                        String novelTitle = novelTitleElement.text();
-                        chapterNovel.setNovelTitle(novelTitle);
-                    }
-
-                    // Get chapter title
-                    Element chapterTitleElement = doc.selectFirst("h2 a.chapter-title");
-                    if (chapterTitleElement != null) {
-                        String chapterTitle = chapterTitleElement.text();
-                        chapterNovel.setChapterTitle(chapterTitle);
-                    }
-
-                    // Get content of the chapter novel
-                    Element chapterContentDiv = doc.selectFirst("div#chapter-c");
-                    if (chapterContentDiv != null) {
-                        chapterContentDiv.select(".ads-responsive").remove();
-                        String chapterContent = chapterContentDiv.html();
-                        chapterNovel.setChapterContent(chapterContent);
-                    }
+                // Get title
+                Element novelTitleElement = doc.selectFirst("a.truyen-title");
+                if (novelTitleElement != null) {
+                    String novelTitle = novelTitleElement.text();
+                    chapterNovel.setNovelTitle(novelTitle);
                 }
-                else {
-                    String url = String.format("%s/%s/chuong-%d", BASE_URL_2, novelName, chapterNumber);
-                    Document doc = getDocument(url);
 
-                    // Get title
-                    Element novelTitleElement = doc.selectFirst("h1.rv-full-story-title");
-                    if (novelTitleElement != null) {
-                        String novelTitle = novelTitleElement.text();
-                        chapterNovel.setNovelTitle(novelTitle);
-                    }
-
-                    // Get chapter title
-                    Element chapterTitleElement = doc.selectFirst("div.rv-chapt-title a");
-                    if (chapterTitleElement != null) {
-                        String chapterTitle = chapterTitleElement.text();
-                        chapterNovel.setChapterTitle(chapterTitle);
-                    }
-
-                    // Get content of the chapter novel
-                    Element chapterContentDiv = doc.selectFirst("div.chapter-c");
-                    if (chapterContentDiv != null) {
-                        chapterContentDiv.select("div#content-metruyenhot").remove();
-                        String chapterContent = chapterContentDiv.html();
-                        chapterNovel.setChapterContent(chapterContent);
-                    }
+                // Get chapter title
+                Element chapterTitleElement = doc.selectFirst("h2 a.chapter-title");
+                if (chapterTitleElement != null) {
+                    String chapterTitle = chapterTitleElement.text();
+                    chapterNovel.setChapterTitle(chapterTitle);
                 }
-            } catch (Exception e) {
-                throw new ResourceNotFoundException(e.getMessage());
+
+                // Get content of the chapter novel
+                Element chapterContentDiv = doc.selectFirst("div#chapter-c");
+                if (chapterContentDiv != null) {
+                    chapterContentDiv.select(".ads-responsive").remove();
+                    String chapterContent = chapterContentDiv.html();
+                    chapterNovel.setChapterContent(chapterContent);
+                }
+            } else {
+                String url = String.format("%s/%s/chuong-%d", BASE_URL_2, novelName, chapterNumber);
+                Document doc = getDocument(url);
+
+                // Get title
+                Element novelTitleElement = doc.selectFirst("h1.rv-full-story-title");
+                if (novelTitleElement != null) {
+                    String novelTitle = novelTitleElement.text();
+                    chapterNovel.setNovelTitle(novelTitle);
+                }
+
+                // Get chapter title
+                Element chapterTitleElement = doc.selectFirst("div.rv-chapt-title a");
+                if (chapterTitleElement != null) {
+                    String chapterTitle = chapterTitleElement.text();
+                    chapterNovel.setChapterTitle(chapterTitle);
+                }
+
+                // Get content of the chapter novel
+                Element chapterContentDiv = doc.selectFirst("div.chapter-c");
+                if (chapterContentDiv != null) {
+                    chapterContentDiv.select("div#content-metruyenhot").remove();
+                    String chapterContent = chapterContentDiv.html();
+                    chapterNovel.setChapterContent(chapterContent);
+                }
             }
 
             return chapterNovel;

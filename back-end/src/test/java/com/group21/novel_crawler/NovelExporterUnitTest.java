@@ -1,4 +1,4 @@
-package com.group21.novel_crawler.unit;
+package com.group21.novel_crawler;
 
 import com.group21.novel_crawler.controller.NovelExportController;
 import com.group21.novel_crawler.service.NovelExporter;
@@ -15,22 +15,34 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 
-public class NovelExporterTest {
+/**
+ * This class contains unit tests for the NovelExporter.
+ */
+public class NovelExporterUnitTest {
 
     @InjectMocks
+    // The controller to be tested
     NovelExportController novelExportController;
 
     @Mock
+    // The service to be tested
     NovelExporter novelExporter;
 
     @Mock
+    // The service to be tested
     NovelService novelService;
 
+    /**
+     * This method sets up the mocks before each test.
+     */
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
 
+    /**
+     * This test checks if an exception is thrown when an invalid novel name is provided.
+     */
     @Test
     public void fetchChapterDetailsThrowsExceptionWhenInvalidNovelName() throws Exception {
         String invalidNovelName = "invalid-novel-name";
@@ -41,6 +53,9 @@ public class NovelExporterTest {
         assertThrows(Exception.class, () -> novelExporter.fetchChapterDetails(invalidNovelName, chapterNumber));
     }
 
+    /**
+     * This test checks if an exception is thrown when an invalid chapter number is provided.
+     */
     @Test
     public void fetchChapterDetailsThrowsExceptionWhenInvalidChapterNumber() throws Exception {
         String novelName = "dau-pha-thuong-khung";
@@ -51,6 +66,9 @@ public class NovelExporterTest {
         assertThrows(Exception.class, () -> novelExporter.fetchChapterDetails(novelName, invalidChapterNumber));
     }
 
+    /**
+     * This test checks if the export to PDF functionality works as expected.
+     */
     @Test
     public void exportChapterToPdfReturnsSuccessfully() throws Exception {
         String novelName = "dau-pha-thuong-khung";
@@ -66,6 +84,9 @@ public class NovelExporterTest {
         assertEquals(pdfBytes, response.getBody());
     }
 
+    /**
+     * This test checks if the export to EPUB functionality works as expected.
+     */
     @Test
     public void exportChapterToEpubReturnsSuccessfully() throws Exception {
         String novelName = "dau-pha-thuong-khung";
@@ -81,6 +102,9 @@ public class NovelExporterTest {
         assertEquals(pdfBytes, response.getBody());
     }
 
+    /**
+     * This test checks if the export to TXT functionality works as expected.
+     */
     @Test
     public void exportChapterToTxtReturnsSuccessfully() throws Exception {
         String novelName = "dau-pha-thuong-khung";
