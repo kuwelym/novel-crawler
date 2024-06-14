@@ -11,7 +11,7 @@
           <!-- Types -->
           <li class="dropdown">
             <router-link
-              class="dropdown-toggle"
+              class="dropdown-toggle btn-edit"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -39,7 +39,7 @@
           <!-- Genres -->
           <li class="dropdown">
             <router-link
-              class="dropdown-toggle"
+              class="dropdown-toggle btn-edit"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -75,7 +75,7 @@
           <!-- Text style -->
           <li class="dropdown">
             <router-link
-              class="dropdown-toggle"
+              class="dropdown-toggle btn-edit"
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -364,6 +364,7 @@ export default {
 .header-logo {
   display: block;
   width: 196px;
+  height: 51px;
   text-indent: -9999px;
   white-space: nowrap;
   outline: none;
@@ -529,10 +530,14 @@ export default {
   font-size: 15px;
 }
 
-.navbar-default .navbar-nav .open > a {
-  color: #fff;
-  background: #2f566d;
+.btn-edit.show,
+.btn-edit:first-child:active {
+  color: white!important;
+  background-color: #2f566d !important; /* Override with your desired color */
+  border-color: var(--bs-btn-active-border-color) !important;
+  border-radius: 0 !important; /* Override border-radius */
 }
+
 
 .navbar-default .navbar-nav .show .dropdown-menu > li > a,
 .dropdown-menu .row > li > a {
