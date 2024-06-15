@@ -112,7 +112,7 @@ We welcome contributions to improve the Novel Crawler project! Here’s how you 
 1. Fork the Repository: Click the "Fork" button at the top of this repository to create a copy in your GitHub account.
 2. Clone Your Fork: Clone your forked repository to your local machine:
 ```bash
-git clone https://github.com/your-username/novel-crawler
+git clone https://github.com/kuwelym/novel-crawler
 ```
 3. Create a Branch: Create a new branch for your feature or bugfix:
 ```bash
